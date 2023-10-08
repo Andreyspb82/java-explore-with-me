@@ -1,4 +1,4 @@
-package ru.practicum.shareit.client;
+package ru.practicum.ewm.client.stats;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;

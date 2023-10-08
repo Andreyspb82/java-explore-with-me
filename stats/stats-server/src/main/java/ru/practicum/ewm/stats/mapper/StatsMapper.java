@@ -22,7 +22,7 @@ public class StatsMapper {
                 .build();
     }
 
-    public static EndpointHitDto mapToEndpointHitDto (EndpointHit endpointHit) {
+    public static EndpointHitDto mapToEndpointHitDto(EndpointHit endpointHit) {
         return EndpointHitDto.builder()
                 .id(endpointHit.getId())
                 .app(endpointHit.getApp())

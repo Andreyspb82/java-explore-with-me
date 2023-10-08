@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class StatsClient extends ru.practicum.shareit.client.BaseClient {
+public class StatsClient extends BaseClient {
 
     private static final String API_PREFIX = "/stats";
 
@@ -26,7 +26,6 @@ public class StatsClient extends ru.practicum.shareit.client.BaseClient {
         );
     }
 
-
     public ResponseEntity<Object> getViewStats(String start, String end, List<String> uris, Boolean unique) {
         Map<String, Object> parameters = Map.of(
                 "start", start,
@@ -37,6 +36,4 @@ public class StatsClient extends ru.practicum.shareit.client.BaseClient {
 
         return get("?start={start}&end={end}&uris={uris}&unique={unique}", parameters);
     }
-
-
 }

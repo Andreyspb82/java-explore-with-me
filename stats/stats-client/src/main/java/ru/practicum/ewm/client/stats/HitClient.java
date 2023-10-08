@@ -8,7 +8,7 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import ru.practicum.ewm.dto.stats.EndpointHitDto;
 
-public class HitClient extends ru.practicum.shareit.client.BaseClient {
+public class HitClient extends BaseClient {
 
     private static final String API_PREFIX = "/hit";
 
@@ -23,6 +23,6 @@ public class HitClient extends ru.practicum.shareit.client.BaseClient {
     }
 
     public ResponseEntity<Object> createEndpointHit(EndpointHitDto endpointHitDto) {
-        return post("",  endpointHitDto);
+        return post("", endpointHitDto);
     }
 }
