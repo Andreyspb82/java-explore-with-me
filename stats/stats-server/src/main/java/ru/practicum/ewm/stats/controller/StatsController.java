@@ -28,7 +28,7 @@ public class StatsController {
 
     private final StatsService statsService;
 
-    private final static String FORMAT = ("yyyy-MM-dd HH:mm:ss");
+    private static final String FORMAT = ("yyyy-MM-dd HH:mm:ss");
 
     @PostMapping("/hit")
     @ResponseStatus(HttpStatus.OK)
