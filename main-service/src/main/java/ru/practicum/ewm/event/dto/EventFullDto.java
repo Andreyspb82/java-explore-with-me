@@ -53,7 +53,7 @@ public class EventFullDto {
     private String title;
 
     //количество просмотров (считаем сами)
-    private int views;
+    private Long views;
 
 
 

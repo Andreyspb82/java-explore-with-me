@@ -24,6 +24,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Getter
@@ -39,6 +40,7 @@ public class Event {
     private Long id;
 
     @Column(name = "annotation")
+    @Size(min = 20, max = 2000)
     private String annotation;
 
     @ManyToOne
@@ -49,21 +51,20 @@ public class Event {
     private long confirmedRequests;
 
     @Column(name = "created_on")
-    private LocalDateTime createdOn; // = LocalDateTime.now();
+    private LocalDateTime createdOn;
 
     @Column(name = "description")
+    @Size(min = 20, max = 7000)
     private String description;
 
     @Column(name = "event_date")
     private LocalDateTime eventDate;
 
-    // сделать связь с user мани оне
+
     @ManyToOne
     @JoinColumn(name = "initiator_id")
     private User initiator;
 
-    // сделать связь с user оне оне
-   // @Embedded
 
     @OneToOne
     @JoinColumn(name = "location_id")
@@ -91,6 +92,7 @@ public class Event {
 //    private StateAction stateAction;
 
     @Column(name = "title")
+    @Size(min = 3, max = 120)
     private String title;
 
     @Column(name = "views")

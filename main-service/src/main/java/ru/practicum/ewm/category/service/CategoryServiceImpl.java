@@ -9,9 +9,11 @@ import ru.practicum.ewm.category.dto.NewCategoryDto;
 import ru.practicum.ewm.category.mapper.CategoryMapper;
 import ru.practicum.ewm.category.model.Category;
 import ru.practicum.ewm.category.repository.CategoryRepository;
+import ru.practicum.ewm.exception.ConflictException;
 import ru.practicum.ewm.exception.NotFoundException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -56,13 +58,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category getCategoryById (long catId){
+    public Category getCategoryById(long catId) {
         if (!categoryRepository.existsById(catId)) {
             throw new NotFoundException("Category with Id =" + catId + " does not exist");
         }
 
         return categoryRepository.findById(catId).get();
     }
-
-
 }

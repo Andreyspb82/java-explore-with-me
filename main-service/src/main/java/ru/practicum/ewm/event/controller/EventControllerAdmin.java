@@ -21,12 +21,14 @@ import ru.practicum.ewm.event.service.EventService;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Validated
 @RestController
 @RequestMapping(path = "/admin/events")
 @AllArgsConstructor
+@Valid
 public class EventControllerAdmin {
 
     public final EventService eventService;
@@ -45,15 +47,17 @@ public class EventControllerAdmin {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<EventFullDto> getEventsByAdmin(@RequestParam(defaultValue = "") List<Long> users,
-                                               @RequestParam(defaultValue = "") List<String> states,
-                                               @RequestParam(defaultValue = "") List<Long> categories,
-                                               @RequestParam(defaultValue = "") @DateTimeFormat(pattern = FORMAT) LocalDateTime rangeStart,
-                                               @RequestParam(defaultValue = "") @DateTimeFormat(pattern = FORMAT) LocalDateTime rangeEnd,
-                                               @Min(0) @RequestParam(defaultValue = "0") int from,
-                                               @Min(0) @RequestParam(defaultValue = "10") int size) {
-        System.out.println("rangeStart = " + rangeStart);
-        System.out.println("rangeEnd = " + rangeEnd);
+    public List<EventFullDto> getEventsForAdmin(
+            @RequestParam(defaultValue = "") List<Long> users,
+            @RequestParam(defaultValue = "") List<String> states,
+            @RequestParam(defaultValue = "") List<Long> categories,
+            @RequestParam(defaultValue = "") @DateTimeFormat(pattern = FORMAT) LocalDateTime rangeStart,
+            @RequestParam(defaultValue = "") @DateTimeFormat(pattern = FORMAT) LocalDateTime rangeEnd,
+            @RequestParam(defaultValue = "0") int from,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        System.out.println("from = " + from + " size =  " + size);
+        PageRequest page = PageRequest.of(from / size, size);
 
         SearchFilterAdmin filterAdmin = SearchFilterAdmin.builder()
                 .users(users)
@@ -63,9 +67,9 @@ public class EventControllerAdmin {
                 .rangeEnd(rangeEnd)
                 .build();
 
-        PageRequest page = PageRequest.of(from / size, size);
 
-        return eventService.getEventsByAdmin(filterAdmin, page);
+        return eventService.getEventsForAdmin(filterAdmin, page);
+
     }
 
 

@@ -31,54 +31,64 @@ public class CompilationServiceImpl implements CompilationService {
     public final EventRepository eventRepository;
 
     @Override
-    public CompilationDto createCompilation (NewCompilationDto newCompilationDto){
-
-        List<Event> events = eventRepository.findAllById(newCompilationDto.getEvents());
+    public CompilationDto createCompilation(NewCompilationDto newCompilationDto) {
 
         Compilation compilation = CompilationMapper.mapToCompilationNew(newCompilationDto);
-        compilation.setEvents(events);
 
-        Compilation compilationSave = compilationRepository.save(compilation);
-        List<EventShortDto> eventShort = EventMapper.mapToEventsShortDto(compilationSave.getEvents());
+        if (newCompilationDto.getEvents() != null) {
+            List<Event> events = eventRepository.findAllById(newCompilationDto.getEvents());
+            compilation.setEvents(events);
+            Compilation compilationSave = compilationRepository.save(compilation);
+            List<EventShortDto> eventShort = EventMapper.mapToEventsShortDto(compilationSave.getEvents());
+            return CompilationMapper.mapToCompilationDto(compilationSave, eventShort);
 
-        return CompilationMapper.mapToCompilationDto(compilationSave, eventShort);
+        } else {
+            Compilation compilationSave = compilationRepository.save(compilation);
+            return CompilationMapper.mapToCompilationDto(compilationSave, new ArrayList<>());
+        }
     }
 
+    // надо упростить
     @Override
-    public CompilationDto updateCompilation(long compId, UpdateCompilationRequest updateCompilation){
+    public CompilationDto updateCompilation(long compId, UpdateCompilationRequest updateCompilation) {
 
-        if(!compilationRepository.existsById(compId)) {
+        if (!compilationRepository.existsById(compId)) {
             throw new NotFoundException("Compilation with Id =" + compId + " does not exist");
         }
 
-        Compilation compilation = compilationRepository.findById(compId).get();
+        Compilation compilationOld = compilationRepository.findById(compId).get();
+        List<Event> events = new ArrayList<>();
+        Compilation compilationUpdate = CompilationMapper.mapToCompilationUpdate(updateCompilation, compilationOld);
 
-        List<Event> events = eventRepository.findAllById(updateCompilation.getEvents());
+        if (updateCompilation.getEvents() != null) {
+            events = eventRepository.findAllById(updateCompilation.getEvents());
+            compilationUpdate.setEvents(events);
+            Compilation compilationSaveUpdate = compilationRepository.save(compilationUpdate);
+            List<EventShortDto> eventShort = EventMapper.mapToEventsShortDto(compilationSaveUpdate.getEvents());
+            return CompilationMapper.mapToCompilationDto(compilationSaveUpdate, eventShort);
+        }
+        else {
+            Compilation compilationSaveUpdate = compilationRepository.save(compilationUpdate);
+            List<EventShortDto> eventShort = EventMapper.mapToEventsShortDto(compilationSaveUpdate.getEvents());
+            return CompilationMapper.mapToCompilationDto(compilationSaveUpdate, eventShort);
 
-        Compilation compilationUpdate = CompilationMapper.mapToCompilationUpdate(updateCompilation, compilation);
-        compilationUpdate.setEvents(events);
-
-        Compilation compilationSaveUpdate = compilationRepository.save(compilationUpdate);
-        List<EventShortDto> eventShort = EventMapper.mapToEventsShortDto(compilationSaveUpdate.getEvents());
-
-        return CompilationMapper.mapToCompilationDto(compilationSaveUpdate, eventShort);
+        }
     }
 
     @Override
-    public void removeCompilationById(long compId){
-        if(!compilationRepository.existsById(compId)) {
+    public void removeCompilationById(long compId) {
+        if (!compilationRepository.existsById(compId)) {
             throw new NotFoundException("Compilation with Id =" + compId + " does not exist");
         }
         compilationRepository.deleteById(compId);
     }
 
     @Override
-    public List<CompilationDto> getCompilations(Boolean pinned, PageRequest page){
+    public List<CompilationDto> getCompilations(Boolean pinned, PageRequest page) {
         List<Compilation> compilations = compilationRepository.findByPinned(pinned, page);
 
-      //  List<Event> events = new ArrayList<>();
         List<CompilationDto> compilationDtos = new ArrayList<>();
-        for(Compilation compilation : compilations) {
+        for (Compilation compilation : compilations) {
             List<EventShortDto> eventShortDtos = EventMapper.mapToEventsShortDto(compilation.getEvents());
             CompilationDto compilationDto = CompilationMapper.mapToCompilationDto(compilation, eventShortDtos);
             compilationDtos.add(compilationDto);
@@ -87,9 +97,9 @@ public class CompilationServiceImpl implements CompilationService {
     }
 
     @Override
-    public CompilationDto getCompilationById (long compId){
+    public CompilationDto getCompilationById(long compId) {
 //
-        if(!compilationRepository.existsById(compId)) {
+        if (!compilationRepository.existsById(compId)) {
             throw new NotFoundException("Compilation with Id =" + compId + " does not exist");
         }
 

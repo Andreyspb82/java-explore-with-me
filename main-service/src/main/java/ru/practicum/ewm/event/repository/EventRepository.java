@@ -22,25 +22,4 @@ public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecific
     Event findByIdAndState (long eventId, String state);
 
 
-//    @Query(value = "select * from events e" +
-//            " where e.id in ?1 ", nativeQuery = true)
-//    List<Event> findByIds (List<Long> eventsId);
-
-
-//    @Query(value = "select * from events e" +
-//            " where e.state in ?1", nativeQuery = true)
-//    List<Event> findByState (List<String> state);
-
-
-
-
-
-
-
-//    @Query(value = "select * from events e" +
-//            " where e.user_id = ?1 and e.id = ?2", nativeQuery = true)
-//    Event findByUserIdAndId(long userId, long eventId);
-
-
-
 }

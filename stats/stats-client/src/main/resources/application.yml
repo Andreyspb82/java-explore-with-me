@@ -1,2 +1,2 @@
-#stats-server:
-#  url: http://localhost:9090
+stats.stats-server:
+  url: http://localhost:9090

@@ -33,12 +33,4 @@ public class LocationModel {
     public LocationModel() {
     }
 
-
-    @Override
-    public String toString() {
-        return "LocationModel{" +
-                "lat=" + lat +
-                ", lon=" + lon +
-                '}';
-    }
 }

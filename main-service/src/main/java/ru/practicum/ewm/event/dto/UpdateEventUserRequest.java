@@ -40,20 +40,5 @@ public class UpdateEventUserRequest {
     @Size(min = 3, max = 120)
     private String title;
 
-    @Override
-    public String toString() {
-        return "UpdateEventUserRequest{" +
-                "id=" + id +
-                ", annotation='" + annotation + '\'' +
-                ", category=" + category +
-                ", description='" + description + '\'' +
-                ", eventDate='" + eventDate + '\'' +
-                ", location=" + location +
-                ", paid=" + paid +
-                ", participantLimit=" + participantLimit +
-                ", requestModeration=" + requestModeration +
-                ", stateAction='" + stateAction + '\'' +
-                ", title='" + title + '\'' +
-                '}';
-    }
+
 }

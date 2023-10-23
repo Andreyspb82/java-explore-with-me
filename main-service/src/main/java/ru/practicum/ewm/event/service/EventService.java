@@ -13,7 +13,6 @@ import ru.practicum.ewm.event.dto.UpdateEventUserRequest;
 import ru.practicum.ewm.event.model.Event;
 import ru.practicum.ewm.request.dto.ParticipationRequestDto;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface EventService {
@@ -37,7 +36,7 @@ public interface EventService {
     public EventFullDto updateEventByAdmin(long eventId, UpdateEventAdminRequest updateEventAdminRequest);
 
 
-    public List<EventFullDto> getEventsByAdmin(SearchFilterAdmin filterAdmin, PageRequest page);
+    public List<EventFullDto> getEventsForAdmin(SearchFilterAdmin filterAdmin, PageRequest page);
 
 
     //public

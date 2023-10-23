@@ -8,6 +8,7 @@ import ru.practicum.ewm.compilation.dto.UpdateCompilationRequest;
 import ru.practicum.ewm.compilation.model.Compilation;
 import ru.practicum.ewm.event.dto.EventShortDto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -15,10 +16,16 @@ public class CompilationMapper {
 
     public static Compilation mapToCompilationNew (NewCompilationDto newCompilationDto) {
 
-        return Compilation.builder()
-                .pinned(newCompilationDto.getPinned() != null && newCompilationDto.getPinned())
-                .title(newCompilationDto.getTitle())
-                .build();
+        if(newCompilationDto == null) {
+            return null;
+        }
+        else {
+            return Compilation.builder()
+                    .pinned(newCompilationDto.getPinned() != null && newCompilationDto.getPinned())
+                    .title(newCompilationDto.getTitle())
+                    .build();
+
+        }
     }
 
     public static Compilation mapToCompilationUpdate (UpdateCompilationRequest updateCompilation,
@@ -26,6 +33,7 @@ public class CompilationMapper {
 
         return Compilation.builder()
                 .id(compilation.getId())
+                .events(updateCompilation.getEvents() == null ? new ArrayList<>() : compilation.getEvents())
                 .pinned(updateCompilation.getPinned() != null ? updateCompilation.getPinned() : compilation.getPinned())
                 .title(updateCompilation.getTitle() !=null ? updateCompilation.getTitle() : compilation.getTitle())
                 .build();
@@ -36,7 +44,7 @@ public class CompilationMapper {
 
         return CompilationDto.builder()
                 .id(compilation.getId())
-                .events(eventShorstDto)
+                .events(eventShorstDto.isEmpty() ? new ArrayList<EventShortDto>() : eventShorstDto)
                 .pinned(compilation.getPinned())
                 .title(compilation.getTitle())
                 .build();

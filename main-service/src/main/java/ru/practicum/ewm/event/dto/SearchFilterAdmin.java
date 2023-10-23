@@ -26,4 +26,5 @@ public class SearchFilterAdmin {
     private LocalDateTime rangeStart;
 
     private LocalDateTime rangeEnd;
+
 }

@@ -31,6 +31,21 @@ public interface StatsRepository extends JpaRepository<EndpointHit, Long> {
             "order by count(eh.ip) desc")
     List<ViewStats> findByDateAndUnique(LocalDateTime start, LocalDateTime end);
 
+//    @Query("select new ru.practicum.ewm.dto.stats.ViewStats(eh.app, eh.uri, count(distinct eh.ip)) " +
+//            "from EndpointHit eh " +
+//           // "where eh.created > ?1 and eh.created < ?2 " +
+//            "group by eh.app, eh.uri " +
+//            "order by count(eh.ip) desc")
+//    List<ViewStats> findByUnique();
+
+//    @Query("select new ru.practicum.ewm.dto.stats.ViewStats(eh.app, eh.uri, count(eh.ip)) " +
+//            "from EndpointHit eh " +
+//            "where eh.uri in ?1 " +
+//            "group by eh.app, eh.uri " +
+//            "order by count(eh.ip) desc")
+//    List<ViewStats> findAllByUri (List<String> uris);
+
+
     @Query("select new ru.practicum.ewm.dto.stats.ViewStats(eh.app, eh.uri, count(eh.ip)) " +
             "from EndpointHit eh " +
             "where eh.created > ?1 and eh.created < ?2 " +

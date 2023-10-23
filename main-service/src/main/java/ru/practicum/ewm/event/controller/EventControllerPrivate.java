@@ -30,6 +30,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/users/{userId}/events")
 @AllArgsConstructor
+@Valid
 public class EventControllerPrivate {
 
     public final EventService eventService;
@@ -47,11 +48,11 @@ public class EventControllerPrivate {
                                             @PathVariable long eventId,
                                             @Valid @RequestBody UpdateEventUserRequest updateEventUserRequest) {
 
-        //System.out.println("stateAction " + updateEventUserRequest);
+
         return eventService.updateEventByUserId(userId, eventId, updateEventUserRequest);
     }
 
-    @PatchMapping("/{eventId}/requests") // делать
+    @PatchMapping("/{eventId}/requests")
     @ResponseStatus(HttpStatus.OK)
     public EventRequestStatusUpdateResult updateStatusRequestForEvent(@PathVariable long userId,
                                                                       @PathVariable long eventId,
@@ -92,14 +93,6 @@ public class EventControllerPrivate {
 
         return eventService.getRequestsByOwner(userId, eventId);
     }
-
-
-//    //test
-//    @GetMapping("/{eventId}")
-//    @ResponseStatus(HttpStatus.OK)
-//    public EventFullDto getLIst() {
-//        return eventService.getListTest();
-//    }
 
 
 }
