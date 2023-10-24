@@ -75,7 +75,7 @@ public class EventControllerPrivate {
 
         PageRequest page = PageRequest.of(from / size, size);
 
-        return eventService.getEventsByUserId(userId, page);
+        return eventService.getEventsByOwnerId(userId, page);
     }
 
     @GetMapping("/{eventId}")

@@ -62,10 +62,12 @@ public class EventControllerPublic {
                 .rangeEnd(rangeEnd)
                 .onlyAvailable(onlyAvailable)
                 .sort(sort)
+                .from(from)
+                .size(size)
                 .build();
 
 
-        PageRequest page = PageRequest.of(from / size, size);
+      //  PageRequest page = PageRequest.of(from / size, size);
 
         EndpointHitDto endpointHitDto = EndpointHitDto.builder()
                 .app("ewm-main-service")
@@ -75,7 +77,7 @@ public class EventControllerPublic {
                 .build();
 
         hitClient.createEndpointHit(endpointHitDto);
-        return eventService.getEventsPublic(filterPublic, page);
+        return eventService.getEventsPublic(filterPublic);
     }
 
     @GetMapping("{id}")

@@ -19,9 +19,7 @@ import ru.practicum.ewm.event.dto.UpdateEventAdminRequest;
 import ru.practicum.ewm.event.service.EventService;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Validated
@@ -32,6 +30,7 @@ import java.util.List;
 public class EventControllerAdmin {
 
     public final EventService eventService;
+
 
     private static final String FORMAT = ("yyyy-MM-dd HH:mm:ss");
 
@@ -68,7 +67,7 @@ public class EventControllerAdmin {
                 .build();
 
 
-        return eventService.getEventsForAdmin(filterAdmin, page);
+        return eventService.getEventsByAdmin(filterAdmin, page);
 
     }
 

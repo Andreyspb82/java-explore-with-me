@@ -30,4 +30,8 @@ public class SearchFilterPublic {
 
     private String sort;
 
+    private Integer from;
+
+    private Integer size;
+
 }

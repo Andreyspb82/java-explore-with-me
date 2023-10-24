@@ -25,7 +25,7 @@ public interface EventService {
     public EventRequestStatusUpdateResult updateStatusRequestForEvent(long userId, long eventId, EventRequestStatusUpdateRequest eventRequestStatusUpdateRequest);
 
 
-    public List<EventShortDto> getEventsByUserId(long userId, PageRequest page);
+    public List<EventShortDto> getEventsByOwnerId(long userId, PageRequest page);
 
     public EventFullDto getEventByOwner(long userId, long eventId);
 
@@ -36,23 +36,17 @@ public interface EventService {
     public EventFullDto updateEventByAdmin(long eventId, UpdateEventAdminRequest updateEventAdminRequest);
 
 
-    public List<EventFullDto> getEventsForAdmin(SearchFilterAdmin filterAdmin, PageRequest page);
+    public List<EventFullDto> getEventsByAdmin(SearchFilterAdmin filterAdmin, PageRequest page);
 
 
     //public
 
-    public List<EventShortDto> getEventsPublic(SearchFilterPublic filterPublic, PageRequest page);
+    public List<EventShortDto> getEventsPublic(SearchFilterPublic filterPublic);
 
     public EventFullDto getEventByIdPublic(long id);
 
 
     //для сервиса запросов
     public Event getEventByIdForService(long eventId);
-
-
-    //test
-
-
-    public EventFullDto getListTest();
 
 }
