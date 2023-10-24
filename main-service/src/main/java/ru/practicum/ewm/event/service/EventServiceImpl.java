@@ -5,9 +5,7 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.practicum.ewm.category.model.Category;
 import ru.practicum.ewm.category.service.CategoryService;
@@ -20,7 +18,6 @@ import ru.practicum.ewm.event.dto.SearchFilterAdmin;
 import ru.practicum.ewm.event.dto.SearchFilterPublic;
 import ru.practicum.ewm.event.dto.UpdateEventAdminRequest;
 import ru.practicum.ewm.event.dto.UpdateEventUserRequest;
-import ru.practicum.ewm.event.enums.SortEvents;
 import ru.practicum.ewm.event.enums.State;
 import ru.practicum.ewm.event.mapper.EventMapper;
 import ru.practicum.ewm.event.mapper.LocationMapper;
@@ -41,8 +38,6 @@ import ru.practicum.ewm.request.repository.ParticipationRequestRepository;
 import ru.practicum.ewm.user.model.User;
 import ru.practicum.ewm.user.service.UserService;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -52,7 +47,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -76,13 +70,12 @@ public class EventServiceImpl implements EventService {
 
     private static final DateTimeFormatter FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    private static final int LATER_HOURS = 2;
 
     // private
     @Override
     public EventFullDto createEvent(long userId, NewEventDto newEvent) {
 
-        eventDateValidation(LocalDateTime.parse(newEvent.getEventDate(), FORMAT), 2);
+        eventDateValidation(LocalDateTime.parse(newEvent.getEventDate(),  FORMAT), 2);
 
         LocationModel locationModel = locationRepository.save(LocationMapper.mapToLocationModel(newEvent.getLocation()));
         Category category = categoryService.getCategoryById(newEvent.getCategory());
