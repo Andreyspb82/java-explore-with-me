@@ -9,11 +9,9 @@ import ru.practicum.ewm.category.dto.NewCategoryDto;
 import ru.practicum.ewm.category.mapper.CategoryMapper;
 import ru.practicum.ewm.category.model.Category;
 import ru.practicum.ewm.category.repository.CategoryRepository;
-import ru.practicum.ewm.exception.ConflictException;
 import ru.practicum.ewm.exception.NotFoundException;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -24,7 +22,6 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto createCategory(NewCategoryDto newCategory) {
-
         return CategoryMapper.mapToCategoryDto(categoryRepository.save(CategoryMapper.mapToCategory(newCategory)));
     }
 
@@ -36,6 +33,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryDto updateCategory(long catId, CategoryDto categoryDto) {
 
+        if (!categoryRepository.existsById(catId)) {
+            throw new NotFoundException("Category with Id =" + catId + " does not exist");
+        }
+
         Category oldCat = categoryRepository.findById(catId).get();
         oldCat.setName(categoryDto.getName());
         return CategoryMapper.mapToCategoryDto(categoryRepository.save(oldCat));
@@ -43,7 +44,6 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryDto> getCategories(PageRequest page) {
-
         return CategoryMapper.mapToCategoriesDto(categoryRepository.findAll(page));
     }
 
@@ -53,16 +53,15 @@ public class CategoryServiceImpl implements CategoryService {
         if (!categoryRepository.existsById(catId)) {
             throw new NotFoundException("Category with Id =" + catId + " does not exist");
         }
-
         return CategoryMapper.mapToCategoryDto(categoryRepository.findById(catId).get());
     }
 
     @Override
-    public Category getCategoryById(long catId) {
+    public Category getCategoryByIdForService(long catId) {
+
         if (!categoryRepository.existsById(catId)) {
             throw new NotFoundException("Category with Id =" + catId + " does not exist");
         }
-
         return categoryRepository.findById(catId).get();
     }
 }

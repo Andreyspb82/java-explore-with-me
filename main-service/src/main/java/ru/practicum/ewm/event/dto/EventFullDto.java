@@ -17,10 +17,8 @@ public class EventFullDto {
 
     private Long id;
 
-    //*
     private String annotation;
 
-    //*
     private CategoryDto category;
 
     private long confirmedRequests;
@@ -29,16 +27,12 @@ public class EventFullDto {
 
     private String description;
 
-    //*
     private String eventDate;
 
-    //*
     private UserShortDto initiator;
 
-    //*
     private Location location;
 
-    //*
     private Boolean paid;
 
     private Long participantLimit;
@@ -49,14 +43,7 @@ public class EventFullDto {
 
     private String state;
 
-    //*
     private String title;
 
-    //количество просмотров (считаем сами)
     private Long views;
-
-
-
-
-
 }

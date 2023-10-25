@@ -39,8 +39,7 @@ public class StatsServiceImpl implements StatsService {
         }
         if (unique) {
             return statsRepository.findByDateAndUnique(start, end);
-        }
-        else {
+        } else {
             return statsRepository.findByDate(start, end);
         }
     }

@@ -1,6 +1,7 @@
 package ru.practicum.ewm.request.controller;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,13 +15,15 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.ewm.request.dto.ParticipationRequestDto;
 import ru.practicum.ewm.request.service.ParticipationRequestService;
 
-import java.util.ArrayList;
+import javax.validation.Valid;
 import java.util.List;
 
 @Validated
 @RestController
+@Slf4j
 @RequestMapping(path = "/users/{userId}/requests")
 @AllArgsConstructor
+@Valid
 public class RequestControllerPrivate {
 
     public final ParticipationRequestService requestService;
@@ -30,15 +33,15 @@ public class RequestControllerPrivate {
     public ParticipationRequestDto createRequest(@PathVariable long userId,
                                                  @RequestParam long eventId) {
 
+        log.info("Creating ParticipationRequest with userId={}, eventId={}", userId, eventId);
         return requestService.createRequest(userId, eventId);
-
     }
 
     @PatchMapping("/{requestId}/cancel")
     @ResponseStatus(HttpStatus.OK)
     public ParticipationRequestDto cancelRequestByOwner(@PathVariable long userId,
                                                         @PathVariable long requestId) {
-
+        log.info("Cancel ParticipationRequest with userId={}, requestId={}", userId, requestId);
         return requestService.cancelRequestByOwner(requestId, userId);
     }
 
@@ -46,8 +49,7 @@ public class RequestControllerPrivate {
     @ResponseStatus(HttpStatus.OK)
     public List<ParticipationRequestDto> getRequestsByUserId(@PathVariable long userId) {
 
+        log.info("Get List<ParticipationRequestDto> with userId={}", userId);
         return requestService.getRequestsByUserId(userId);
     }
-
-
 }

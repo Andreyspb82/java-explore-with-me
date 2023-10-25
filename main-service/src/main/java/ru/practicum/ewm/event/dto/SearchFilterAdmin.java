@@ -27,4 +27,14 @@ public class SearchFilterAdmin {
 
     private LocalDateTime rangeEnd;
 
+    @Override
+    public String toString() {
+        return "SearchFilterAdmin{" +
+                "users=" + users +
+                ", states=" + states +
+                ", categories=" + categories +
+                ", rangeStart=" + rangeStart +
+                ", rangeEnd=" + rangeEnd +
+                '}';
+    }
 }

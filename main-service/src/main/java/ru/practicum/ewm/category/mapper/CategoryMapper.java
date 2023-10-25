@@ -25,12 +25,10 @@ public class CategoryMapper {
                 .build();
     }
 
-    public static List<CategoryDto> mapToCategoriesDto (List<Category> categories) {
+    public static List<CategoryDto> mapToCategoriesDto(List<Category> categories) {
         return categories
                 .stream()
                 .map(CategoryMapper::mapToCategoryDto)
                 .collect(Collectors.toList());
     }
-
-
 }

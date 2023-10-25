@@ -16,8 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class StatsClient   {
-
+public class StatsClient {
 
     private static final String API_PREFIX = "/stats";
 
@@ -40,6 +39,4 @@ public class StatsClient   {
         }
         return null;
     }
-
-
 }

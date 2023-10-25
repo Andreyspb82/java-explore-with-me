@@ -1,6 +1,7 @@
 package ru.practicum.ewm.category.controller;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,8 +20,10 @@ import javax.validation.Valid;
 
 @Validated
 @RestController
+@Slf4j
 @RequestMapping(path = "/admin/categories")
 @AllArgsConstructor
+@Valid
 public class CategoryControllerAdmin {
 
     public final CategoryService categoryService;
@@ -29,14 +32,15 @@ public class CategoryControllerAdmin {
     @ResponseStatus(HttpStatus.CREATED)
     public CategoryDto createCategory(@Valid @RequestBody NewCategoryDto newCategory) {
 
+        log.info("Creating Category with name={}", newCategory.getName());
         return categoryService.createCategory(newCategory);
     }
-
 
     @DeleteMapping("/{catId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeCategoryById(@PathVariable long catId) {
 
+        log.info("Delete Category with id={}", catId);
         categoryService.removeCategoryById(catId);
     }
 
@@ -44,8 +48,8 @@ public class CategoryControllerAdmin {
     @ResponseStatus(HttpStatus.OK)
     public CategoryDto updateCategory(@PathVariable long catId,
                                       @Valid @RequestBody CategoryDto categoryDto) {
+
+        log.info("Update Category with id={}, new name = {}", catId, categoryDto.getName());
         return categoryService.updateCategory(catId, categoryDto);
     }
-
-
 }

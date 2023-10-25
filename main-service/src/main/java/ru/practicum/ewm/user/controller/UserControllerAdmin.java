@@ -1,6 +1,7 @@
 package ru.practicum.ewm.user.controller;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -23,8 +24,10 @@ import java.util.List;
 
 @Validated
 @RestController
+@Slf4j
 @RequestMapping(path = "/admin/users")
 @AllArgsConstructor
+@Valid
 public class UserControllerAdmin {
 
     public final UserService userService;
@@ -33,6 +36,7 @@ public class UserControllerAdmin {
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto createUser(@Valid @RequestBody NewUserRequest newUser) {
 
+        log.info("Creating User with name={}, email={}", newUser.getName(), newUser.getEmail());
         return userService.createUser(newUser);
     }
 
@@ -43,6 +47,7 @@ public class UserControllerAdmin {
                                   @Min(0) @RequestParam(defaultValue = "10") int size) {
 
         PageRequest page = PageRequest.of(from / size, size);
+        log.info("Get List<UserDto> with ids={}, from={}, size={}", ids, from, size);
         return userService.getUsers(ids, page);
     }
 
@@ -50,6 +55,7 @@ public class UserControllerAdmin {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeUserId(@PathVariable long userId) {
 
+        log.info("Delete User with id={}", userId);
         userService.removeUserById(userId);
     }
 }

@@ -14,33 +14,29 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CompilationMapper {
 
-    public static Compilation mapToCompilationNew (NewCompilationDto newCompilationDto) {
+    public static Compilation mapToCompilationNew(NewCompilationDto newCompilationDto) {
 
-        if(newCompilationDto == null) {
+        if (newCompilationDto == null) {
             return null;
-        }
-        else {
+        } else {
             return Compilation.builder()
                     .pinned(newCompilationDto.getPinned() != null && newCompilationDto.getPinned())
                     .title(newCompilationDto.getTitle())
                     .build();
-
         }
     }
 
-    public static Compilation mapToCompilationUpdate (UpdateCompilationRequest updateCompilation,
-                                                      Compilation compilation) {
-
+    public static Compilation mapToCompilationUpdate(UpdateCompilationRequest updateCompilation,
+                                                     Compilation compilation) {
         return Compilation.builder()
                 .id(compilation.getId())
                 .events(updateCompilation.getEvents() == null ? new ArrayList<>() : compilation.getEvents())
                 .pinned(updateCompilation.getPinned() != null ? updateCompilation.getPinned() : compilation.getPinned())
-                .title(updateCompilation.getTitle() !=null ? updateCompilation.getTitle() : compilation.getTitle())
+                .title(updateCompilation.getTitle() != null ? updateCompilation.getTitle() : compilation.getTitle())
                 .build();
     }
 
-
-    public static CompilationDto mapToCompilationDto (Compilation compilation, List<EventShortDto> eventShorstDto) {
+    public static CompilationDto mapToCompilationDto(Compilation compilation, List<EventShortDto> eventShorstDto) {
 
         return CompilationDto.builder()
                 .id(compilation.getId())

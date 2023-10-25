@@ -2,18 +2,15 @@ package ru.practicum.ewm.event.mapper;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import ru.practicum.ewm.category.dto.CategoryDto;
 import ru.practicum.ewm.category.mapper.CategoryMapper;
 import ru.practicum.ewm.category.model.Category;
 import ru.practicum.ewm.event.dto.EventFullDto;
 import ru.practicum.ewm.event.dto.EventShortDto;
-import ru.practicum.ewm.event.dto.Location;
 import ru.practicum.ewm.event.dto.NewEventDto;
 import ru.practicum.ewm.event.dto.UpdateEventUserRequest;
 import ru.practicum.ewm.event.enums.State;
 import ru.practicum.ewm.event.enums.StateAction;
 import ru.practicum.ewm.event.model.Event;
-import ru.practicum.ewm.user.dto.UserShortDto;
 import ru.practicum.ewm.user.mapper.UserMapper;
 import ru.practicum.ewm.user.model.User;
 
@@ -24,6 +21,7 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class EventMapper {
+
     private static final DateTimeFormatter FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public static Event mapToEventNew(NewEventDto newEvent, Category categoryById, User user) {
@@ -35,12 +33,11 @@ public class EventMapper {
                 .eventDate(LocalDateTime.parse(newEvent.getEventDate(), FORMAT))
                 .initiator(user)
                 .paid(newEvent.getPaid() != null && newEvent.getPaid())
-                .participantLimit(newEvent.getParticipantLimit() == null ? 0L :  newEvent.getParticipantLimit())
+                .participantLimit(newEvent.getParticipantLimit() == null ? 0L : newEvent.getParticipantLimit())
                 .requestModeration(newEvent.getRequestModeration() == null || newEvent.getRequestModeration())
                 .title(newEvent.getTitle())
                 .build();
     }
-
 
     public static Event mapToEventUpdate(Event event, UpdateEventUserRequest updateEvent) {
 
@@ -55,8 +52,7 @@ public class EventMapper {
 
         if (updateEvent.getStateAction() == null) {
             return event;
-        }
-        else {
+        } else {
             if (updateEvent.getStateAction().equals(String.valueOf(StateAction.CANCEL_REVIEW))) {
                 event.setState(State.CANCELED);
             }
@@ -96,14 +92,14 @@ public class EventMapper {
                 .build();
     }
 
-    public static List<EventFullDto> mapToEventsFullDto (List<Event> events) {
+    public static List<EventFullDto> mapToEventsFullDto(List<Event> events) {
 
         return events.stream()
                 .map(EventMapper::mapToEventFullDto)
                 .collect(Collectors.toList());
     }
 
-    public static EventShortDto matToEventShortDto (Event event) {
+    public static EventShortDto matToEventShortDto(Event event) {
 
         return EventShortDto.builder()
                 .id(event.getId())
@@ -116,7 +112,6 @@ public class EventMapper {
                 .title(event.getTitle())
                 .views(event.getViews())
                 .build();
-
     }
 
     public static List<EventShortDto> mapToEventsShortDto(List<Event> events) {

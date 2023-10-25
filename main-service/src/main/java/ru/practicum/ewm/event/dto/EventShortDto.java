@@ -13,7 +13,7 @@ import ru.practicum.ewm.user.dto.UserShortDto;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class EventShortDto {
+public class EventShortDto  {
 
     private Long id;
 
@@ -32,10 +32,4 @@ public class EventShortDto {
     private String title;
 
     private Long views;
-
-
-
-
-
-
 }

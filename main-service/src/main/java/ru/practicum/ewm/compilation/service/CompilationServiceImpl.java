@@ -19,7 +19,6 @@ import ru.practicum.ewm.exception.NotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -48,7 +47,6 @@ public class CompilationServiceImpl implements CompilationService {
         }
     }
 
-    // надо упростить
     @Override
     public CompilationDto updateCompilation(long compId, UpdateCompilationRequest updateCompilation) {
 
@@ -57,22 +55,21 @@ public class CompilationServiceImpl implements CompilationService {
         }
 
         Compilation compilationOld = compilationRepository.findById(compId).get();
-        List<Event> events = new ArrayList<>();
         Compilation compilationUpdate = CompilationMapper.mapToCompilationUpdate(updateCompilation, compilationOld);
 
         if (updateCompilation.getEvents() != null) {
-            events = eventRepository.findAllById(updateCompilation.getEvents());
+            List<Event> events = eventRepository.findAllById(updateCompilation.getEvents());
             compilationUpdate.setEvents(events);
-            Compilation compilationSaveUpdate = compilationRepository.save(compilationUpdate);
-            List<EventShortDto> eventShort = EventMapper.mapToEventsShortDto(compilationSaveUpdate.getEvents());
-            return CompilationMapper.mapToCompilationDto(compilationSaveUpdate, eventShort);
+            return mapToDto(compilationUpdate);
+        } else {
+            return mapToDto(compilationUpdate);
         }
-        else {
-            Compilation compilationSaveUpdate = compilationRepository.save(compilationUpdate);
-            List<EventShortDto> eventShort = EventMapper.mapToEventsShortDto(compilationSaveUpdate.getEvents());
-            return CompilationMapper.mapToCompilationDto(compilationSaveUpdate, eventShort);
+    }
 
-        }
+    private CompilationDto mapToDto(Compilation compilationUpdate) {
+        Compilation compilationSaveUpdate = compilationRepository.save(compilationUpdate);
+        List<EventShortDto> eventShort = EventMapper.mapToEventsShortDto(compilationSaveUpdate.getEvents());
+        return CompilationMapper.mapToCompilationDto(compilationSaveUpdate, eventShort);
     }
 
     @Override
@@ -87,26 +84,24 @@ public class CompilationServiceImpl implements CompilationService {
     public List<CompilationDto> getCompilations(Boolean pinned, PageRequest page) {
         List<Compilation> compilations = compilationRepository.findByPinned(pinned, page);
 
-        List<CompilationDto> compilationDtos = new ArrayList<>();
+        List<CompilationDto> compilationsDto = new ArrayList<>();
         for (Compilation compilation : compilations) {
             List<EventShortDto> eventShortDtos = EventMapper.mapToEventsShortDto(compilation.getEvents());
             CompilationDto compilationDto = CompilationMapper.mapToCompilationDto(compilation, eventShortDtos);
-            compilationDtos.add(compilationDto);
+            compilationsDto.add(compilationDto);
         }
-        return compilationDtos;
+        return compilationsDto;
     }
 
     @Override
     public CompilationDto getCompilationById(long compId) {
-//
+
         if (!compilationRepository.existsById(compId)) {
             throw new NotFoundException("Compilation with Id =" + compId + " does not exist");
         }
-
         Compilation compilation = compilationRepository.findById(compId).get();
         List<EventShortDto> eventShort = EventMapper.mapToEventsShortDto(compilation.getEvents());
 
         return CompilationMapper.mapToCompilationDto(compilation, eventShort);
     }
-
 }

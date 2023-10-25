@@ -12,10 +12,9 @@ import java.util.stream.Collectors;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ParticipationRequestMapper {
 
-
     private static final DateTimeFormatter FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    public static ParticipationRequestDto mapToParticipationRequestDto (ParticipationRequest request) {
+    public static ParticipationRequestDto mapToParticipationRequestDto(ParticipationRequest request) {
 
         return ParticipationRequestDto.builder()
                 .id(request.getId())
@@ -24,17 +23,12 @@ public class ParticipationRequestMapper {
                 .requester(request.getRequester().getId())
                 .status(String.valueOf(request.getStatus()))
                 .build();
-
     }
 
-
-    public static List<ParticipationRequestDto> mapToParticipationRequestsDto (List<ParticipationRequest> requests) {
+    public static List<ParticipationRequestDto> mapToParticipationRequestsDto(List<ParticipationRequest> requests) {
 
         return requests.stream()
                 .map(ParticipationRequestMapper::mapToParticipationRequestDto)
                 .collect(Collectors.toList());
-
     }
-
-
 }

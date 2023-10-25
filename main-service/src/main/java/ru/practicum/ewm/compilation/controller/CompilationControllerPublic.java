@@ -1,6 +1,7 @@
 package ru.practicum.ewm.compilation.controller;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @Validated
 @RestController
+@Slf4j
 @RequestMapping(path = "/compilations")
 @AllArgsConstructor
 @Valid
@@ -28,24 +30,20 @@ public class CompilationControllerPublic {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<CompilationDto> getCompilations (@RequestParam(defaultValue = "false") Boolean pinned,
-                                                 @Min(0) @RequestParam(defaultValue = "0") int from,
-                                                 @Min(0) @RequestParam(defaultValue = "10") int size) {
+    public List<CompilationDto> getCompilations(@RequestParam(defaultValue = "false") Boolean pinned,
+                                                @Min(0) @RequestParam(defaultValue = "0") int from,
+                                                @Min(0) @RequestParam(defaultValue = "10") int size) {
 
         PageRequest page = PageRequest.of(from / size, size);
-
+        log.info("Get Compilations with pinned={}", pinned);
         return compilationService.getCompilations(pinned, page);
     }
 
-
-
     @GetMapping("{compId}")
     @ResponseStatus(HttpStatus.OK)
-    public CompilationDto getCompilationById (@PathVariable long compId) {
+    public CompilationDto getCompilationById(@PathVariable long compId) {
 
+        log.info("Get Compilation with id={}", compId);
         return compilationService.getCompilationById(compId);
-
     }
-
-
 }

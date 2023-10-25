@@ -74,5 +74,4 @@ public class ErrorHandler {
         pw.close();
         return error;
     }
-
 }

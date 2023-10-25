@@ -30,7 +30,7 @@ public class StatsController {
 
     private final StatsService statsService;
 
-    private static final String FORMAT = ("yyyy-MM-dd HH:mm:ss");
+    private static final String FORMAT_TO_DATE = ("yyyy-MM-dd HH:mm:ss");
 
     @PostMapping("/hit")
     @ResponseStatus(HttpStatus.CREATED)
@@ -41,12 +41,12 @@ public class StatsController {
     }
 
     @GetMapping("/stats")
-    public List<ViewStats> getViewStats(@NotNull @RequestParam @DateTimeFormat(pattern = FORMAT) LocalDateTime start,
-                                        @NotNull @RequestParam @DateTimeFormat(pattern = FORMAT) LocalDateTime end,
+    public List<ViewStats> getViewStats(@NotNull @RequestParam @DateTimeFormat(pattern = FORMAT_TO_DATE) LocalDateTime start,
+                                        @NotNull @RequestParam @DateTimeFormat(pattern = FORMAT_TO_DATE) LocalDateTime end,
                                         @RequestParam(defaultValue = "") List<String> uris,
                                         @RequestParam(defaultValue = "false") Boolean unique) {
 
-        log.info("Get stats with start={}, end={}, uris={}, unique={}", start, end, uris, unique);
+        log.info("Get List<ViewStats> with start={}, end={}, uris={}, unique={}", start, end, uris, unique);
         return statsService.getViewStats(start, end, uris, unique);
     }
 }

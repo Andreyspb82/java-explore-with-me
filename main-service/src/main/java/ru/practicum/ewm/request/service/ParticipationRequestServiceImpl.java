@@ -33,34 +33,28 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
 
     public final EventRepository eventRepository;
 
-
     @Override
     public ParticipationRequestDto createRequest(long userId, long eventId) {
 
         Event event = eventService.getEventByIdForService(eventId);
         User user = userService.getUserByIdForService(userId);
-        long confirmedRequests  = event.getConfirmedRequests();
+        long confirmedRequests = event.getConfirmedRequests();
 
         if (event.getInitiator().getId() == user.getId()) {
             throw new ConflictException("The user is the initiator of the event");
         }
-
         if (!event.getState().equals(State.PUBLISHED)) {
             throw new ConflictException("Event not published");
         }
-
         if (event.getParticipantLimit() != 0 && event.getParticipantLimit() == event.getConfirmedRequests()) {
             throw new ConflictException("Event participant limit reached");
         }
-
         ParticipationRequest request = new ParticipationRequest();
         request.setRequester(user);
         request.setStatus(Status.PENDING);
 
-
         if (event.getParticipantLimit() == 0) {
             request.setStatus(Status.CONFIRMED);
-            System.out.println("Должен быть confirmed");
         }
         if (!event.getRequestModeration() && (event.getConfirmedRequests() < event.getParticipantLimit())) {
             request.setStatus(Status.CONFIRMED);
@@ -71,7 +65,6 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
         eventRepository.save(event);
         return ParticipationRequestMapper.mapToParticipationRequestDto(requestRepository.save(request));
     }
-
 
     @Override
     public ParticipationRequestDto cancelRequestByOwner(long requestId, long userId) {
@@ -85,7 +78,6 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
             return ParticipationRequestMapper.mapToParticipationRequestDto(requestRepository.save(request.get()));
         }
     }
-
 
     @Override
     public List<ParticipationRequestDto> getRequestsByUserId(long userId) {

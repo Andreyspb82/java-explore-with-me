@@ -1,6 +1,7 @@
 package ru.practicum.ewm.compilation.controller;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,39 +21,38 @@ import javax.validation.Valid;
 
 @Validated
 @RestController
+@Slf4j
 @RequestMapping(path = "/admin/compilations")
 @AllArgsConstructor
+@Valid
 public class CompilationControllerAdmin {
 
     private final CompilationService compilationService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CompilationDto createCompilation (@Valid @RequestBody NewCompilationDto newCompilationDto) {
+    public CompilationDto createCompilation(@Valid @RequestBody NewCompilationDto newCompilationDto) {
 
+        log.info("Creating Compilation with events={}, pinned={}, title={}", newCompilationDto.getEvents(),
+                newCompilationDto.getPinned(), newCompilationDto.getTitle());
         return compilationService.createCompilation(newCompilationDto);
     }
 
     @PatchMapping("/{compId}")
     @ResponseStatus(HttpStatus.OK)
-    public CompilationDto updateCompilation (@PathVariable long compId,
-                                             @Valid @RequestBody UpdateCompilationRequest updateCompilation) {
+    public CompilationDto updateCompilation(@PathVariable long compId,
+                                            @Valid @RequestBody UpdateCompilationRequest updateCompilation) {
 
+        log.info("Update Compilation with id={}, new events = {}, new pinned={}, new title={}", compId, updateCompilation.getEvents(),
+                updateCompilation.getPinned(), updateCompilation.getTitle());
         return compilationService.updateCompilation(compId, updateCompilation);
     }
 
     @DeleteMapping("/{compId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removeCompilationById (@PathVariable long compId){
+    public void removeCompilationById(@PathVariable long compId) {
 
+        log.info("Delete Compilation with id={}", compId);
         compilationService.removeCompilationById(compId);
     }
-
-
-
-
-
-
-
-
 }

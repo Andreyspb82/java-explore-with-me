@@ -32,5 +32,4 @@ public class LocationModel {
 
     public LocationModel() {
     }
-
 }

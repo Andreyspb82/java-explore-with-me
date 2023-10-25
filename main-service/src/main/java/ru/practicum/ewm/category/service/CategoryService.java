@@ -15,10 +15,9 @@ public interface CategoryService {
 
     public CategoryDto updateCategory(long catId, CategoryDto categoryDto);
 
-    public List<CategoryDto> getCategories (PageRequest page);
+    public List<CategoryDto> getCategories(PageRequest page);
 
     public CategoryDto getCategoryDtoById(long catId);
 
-    public Category getCategoryById (long catId);
-
+    public Category getCategoryByIdForService(long catId);
 }

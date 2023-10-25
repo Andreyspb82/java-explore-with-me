@@ -1,6 +1,7 @@
 package ru.practicum.ewm.event.controller;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -19,11 +20,13 @@ import ru.practicum.ewm.event.dto.UpdateEventAdminRequest;
 import ru.practicum.ewm.event.service.EventService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Validated
 @RestController
+@Slf4j
 @RequestMapping(path = "/admin/events")
 @AllArgsConstructor
 @Valid
@@ -31,31 +34,27 @@ public class EventControllerAdmin {
 
     public final EventService eventService;
 
-
-    private static final String FORMAT = ("yyyy-MM-dd HH:mm:ss");
+    private static final String FORMAT_TO_DATE = ("yyyy-MM-dd HH:mm:ss");
 
     @PatchMapping("/{eventId}")
     @ResponseStatus(HttpStatus.OK)
     public EventFullDto updateEventByAdmin(@PathVariable long eventId,
                                            @Valid @RequestBody UpdateEventAdminRequest updateEventAdminRequest) {
 
+        log.info("Update Event by admin with eventId={}, UpdateEventAdminRequest={}", eventId, updateEventAdminRequest);
         return eventService.updateEventByAdmin(eventId, updateEventAdminRequest);
-
     }
-
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<EventFullDto> getEventsForAdmin(
-            @RequestParam(defaultValue = "") List<Long> users,
-            @RequestParam(defaultValue = "") List<String> states,
-            @RequestParam(defaultValue = "") List<Long> categories,
-            @RequestParam(defaultValue = "") @DateTimeFormat(pattern = FORMAT) LocalDateTime rangeStart,
-            @RequestParam(defaultValue = "") @DateTimeFormat(pattern = FORMAT) LocalDateTime rangeEnd,
-            @RequestParam(defaultValue = "0") int from,
-            @RequestParam(defaultValue = "10") int size
-    ) {
-        System.out.println("from = " + from + " size =  " + size);
+    public List<EventFullDto> getEventsByAdmin(@RequestParam(defaultValue = "") List<Long> users,
+                                               @RequestParam(defaultValue = "") List<String> states,
+                                               @RequestParam(defaultValue = "") List<Long> categories,
+                                               @RequestParam(defaultValue = "") @DateTimeFormat(pattern = FORMAT_TO_DATE) LocalDateTime rangeStart,
+                                               @RequestParam(defaultValue = "") @DateTimeFormat(pattern = FORMAT_TO_DATE) LocalDateTime rangeEnd,
+                                               @Min(0) @RequestParam(defaultValue = "0") int from,
+                                               @Min(0) @RequestParam(defaultValue = "10") int size) {
+
         PageRequest page = PageRequest.of(from / size, size);
 
         SearchFilterAdmin filterAdmin = SearchFilterAdmin.builder()
@@ -65,11 +64,7 @@ public class EventControllerAdmin {
                 .rangeStart(rangeStart)
                 .rangeEnd(rangeEnd)
                 .build();
-
-
+        log.info("Get List<EventFullDto> by admin with {}, from={}, size={}", filterAdmin, from, size);
         return eventService.getEventsByAdmin(filterAdmin, page);
-
     }
-
-
 }

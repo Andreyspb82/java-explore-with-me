@@ -1,7 +1,7 @@
 package ru.practicum.ewm.event.controller;
 
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.PageRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -24,10 +24,10 @@ import javax.validation.constraints.Min;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 
 @Validated
 @RestController
+@Slf4j
 @RequestMapping(path = "/events")
 @AllArgsConstructor
 @Valid
@@ -37,22 +37,21 @@ public class EventControllerPublic {
 
     public final HitClient hitClient;
 
-    private static final String FORMAT = ("yyyy-MM-dd HH:mm:ss");
-    private static final DateTimeFormatter FORMAT_TO_STRING = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static final String FORMAT_TO_DATE = ("yyyy-MM-dd HH:mm:ss");
+    private static final DateTimeFormatter FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<EventShortDto> getEventsPublic(@RequestParam(defaultValue = "") String text,
                                                @RequestParam(defaultValue = "") List<Long> categories,
                                                @RequestParam(defaultValue = "") Boolean paid,
-                                               @RequestParam(defaultValue = "") @DateTimeFormat(pattern = FORMAT) LocalDateTime rangeStart,
-                                               @RequestParam(defaultValue = "") @DateTimeFormat(pattern = FORMAT) LocalDateTime rangeEnd,
+                                               @RequestParam(defaultValue = "") @DateTimeFormat(pattern = FORMAT_TO_DATE) LocalDateTime rangeStart,
+                                               @RequestParam(defaultValue = "") @DateTimeFormat(pattern = FORMAT_TO_DATE) LocalDateTime rangeEnd,
                                                @RequestParam(defaultValue = "false") Boolean onlyAvailable,
                                                @RequestParam(defaultValue = "") String sort,
                                                @Min(0) @RequestParam(defaultValue = "0") int from,
                                                @Min(0) @RequestParam(defaultValue = "10") int size,
                                                HttpServletRequest request) {
-
 
         SearchFilterPublic filterPublic = SearchFilterPublic.builder()
                 .text(text)
@@ -66,16 +65,14 @@ public class EventControllerPublic {
                 .size(size)
                 .build();
 
-
-      //  PageRequest page = PageRequest.of(from / size, size);
-
         EndpointHitDto endpointHitDto = EndpointHitDto.builder()
                 .app("ewm-main-service")
                 .ip(request.getRemoteAddr())
                 .uri(request.getRequestURI())
-                .timestamp(LocalDateTime.now().format(FORMAT_TO_STRING))
+                .timestamp(LocalDateTime.now().format(FORMAT))
                 .build();
 
+        log.info("Get List<EventShortDto> with {}, from={}, size={}", filterPublic, from, size);
         hitClient.createEndpointHit(endpointHitDto);
         return eventService.getEventsPublic(filterPublic);
     }
@@ -89,12 +86,11 @@ public class EventControllerPublic {
                 .app("ewm-main-service")
                 .ip(request.getRemoteAddr())
                 .uri(request.getRequestURI())
-                .timestamp(LocalDateTime.now().format(FORMAT_TO_STRING))
+                .timestamp(LocalDateTime.now().format(FORMAT))
                 .build();
 
+        log.info("Get Event with id={}", id);
         hitClient.createEndpointHit(endpointHitDto);
         return eventService.getEventByIdPublic(id);
     }
-
-
 }

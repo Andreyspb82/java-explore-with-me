@@ -28,6 +28,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "requests")
 public class ParticipationRequest {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -55,24 +56,12 @@ public class ParticipationRequest {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ParticipationRequest request = (ParticipationRequest) o;
-        return Objects.equals(id, request.id) && Objects.equals(created, request.created) && Objects.equals(event, request.event) && Objects.equals(requester, request.requester) && status == request.status;
+        return Objects.equals(id, request.id) && Objects.equals(created, request.created) &&
+                Objects.equals(event, request.event) && Objects.equals(requester, request.requester) && status == request.status;
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, created, event, requester, status);
-    }
-
-
-
-    @Override
-    public String toString() {
-        return "ParticipationRequest{" +
-                "id=" + id +
-                ", created=" + created +
-                ", event=" + event +
-                ", requester=" + requester +
-                ", status=" + status +
-                '}';
     }
 }

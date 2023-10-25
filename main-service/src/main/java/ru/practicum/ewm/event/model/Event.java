@@ -3,17 +3,12 @@ package ru.practicum.ewm.event.model;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ru.practicum.ewm.category.dto.CategoryDto;
 import ru.practicum.ewm.category.model.Category;
 import ru.practicum.ewm.event.enums.State;
-import ru.practicum.ewm.event.enums.StateAction;
-import ru.practicum.ewm.user.dto.UserShortDto;
 import ru.practicum.ewm.user.model.User;
 
 import javax.persistence.Column;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -24,7 +19,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Getter
@@ -40,7 +34,6 @@ public class Event {
     private Long id;
 
     @Column(name = "annotation")
-    @Size(min = 20, max = 2000)
     private String annotation;
 
     @ManyToOne
@@ -54,17 +47,14 @@ public class Event {
     private LocalDateTime createdOn;
 
     @Column(name = "description")
-    @Size(min = 20, max = 7000)
     private String description;
 
     @Column(name = "event_date")
     private LocalDateTime eventDate;
 
-
     @ManyToOne
     @JoinColumn(name = "initiator_id")
     private User initiator;
-
 
     @OneToOne
     @JoinColumn(name = "location_id")
@@ -74,9 +64,9 @@ public class Event {
     private Boolean paid;
 
     @Column(name = "participant_limit")
-    private Long participantLimit; // = 0;
+    private Long participantLimit;
 
-    @Column(name = "published_on") // время когда обрадились к данному событию? возможно не надо сохранять в базе?
+    @Column(name = "published_on")
     private LocalDateTime publishedOn;
 
     @Column(name = "request_moderation")
@@ -86,41 +76,12 @@ public class Event {
     @Enumerated(EnumType.STRING)
     private State state;
 
-
-//    @Column(name = "state_action")
-//    @Enumerated(EnumType.STRING)
-//    private StateAction stateAction;
-
     @Column(name = "title")
-    @Size(min = 3, max = 120)
     private String title;
 
     @Column(name = "views")
     private Long views;
 
-
     public Event() {
-    }
-
-
-    @Override
-    public String toString() {
-        return "Event{" +
-                "id=" + id +
-                ", annotation='" + annotation + '\'' +
-                ", category=" + category +
-                ", confirmedRequests=" + confirmedRequests +
-                ", createdOn=" + createdOn +
-                ", description='" + description + '\'' +
-                ", eventDate=" + eventDate +
-                ", initiator=" + initiator +
-                ", locationModel=" + locationModel +
-                ", paid=" + paid +
-                ", participantLimit=" + participantLimit +
-                ", publishedOn=" + publishedOn +
-                ", requestModeration=" + requestModeration +
-                ", state=" + state +
-                ", title='" + title + '\'' +
-                '}';
     }
 }

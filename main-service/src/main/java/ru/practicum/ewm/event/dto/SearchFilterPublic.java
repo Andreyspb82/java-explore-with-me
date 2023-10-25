@@ -34,4 +34,18 @@ public class SearchFilterPublic {
 
     private Integer size;
 
+    @Override
+    public String toString() {
+        return "SearchFilterPublic{" +
+                "text='" + text + '\'' +
+                ", categories=" + categories +
+                ", paid=" + paid +
+                ", rangeStart=" + rangeStart +
+                ", rangeEnd=" + rangeEnd +
+                ", onlyAvailable=" + onlyAvailable +
+                ", sort='" + sort + '\'' +
+                ", from=" + from +
+                ", size=" + size +
+                '}';
+    }
 }

@@ -1,8 +1,6 @@
 package ru.practicum.ewm.event.repository;
 
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -16,10 +14,7 @@ public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecific
 
     Event findByInitiatorIdAndId(long userId, long eventId);
 
-
     @Query(value = "select * from events e" +
-            " where e.id = ?1 and e.state = ?2", nativeQuery = true)
-    Event findByIdAndState (long eventId, String state);
-
-
+            " where e.id = ?1 and e.state = ?2 ", nativeQuery = true)
+    Event findByIdAndState(long eventId, String state);
 }
