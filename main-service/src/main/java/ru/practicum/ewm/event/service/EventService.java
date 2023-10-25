@@ -17,7 +17,6 @@ import java.util.List;
 
 public interface EventService {
 
-    //private
     public EventFullDto createEvent(long userId, NewEventDto newEvent);
 
     public EventFullDto updateEventByOwnerId(long userId, long eventId, UpdateEventUserRequest updateEventUserRequest);
@@ -31,16 +30,13 @@ public interface EventService {
 
     public List<ParticipationRequestDto> getRequestsByOwnerId(long userId, long eventId);
 
-    //admin
     public EventFullDto updateEventByAdmin(long eventId, UpdateEventAdminRequest updateEventAdminRequest);
 
     public List<EventFullDto> getEventsByAdmin(SearchFilterAdmin filterAdmin, PageRequest page);
 
-    //public
     public List<EventShortDto> getEventsPublic(SearchFilterPublic filterPublic);
 
     public EventFullDto getEventByIdPublic(long id);
 
-    //для сервиса запросов
     public Event getEventByIdForService(long eventId);
 }
