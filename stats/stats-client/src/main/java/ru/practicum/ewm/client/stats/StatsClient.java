@@ -29,7 +29,14 @@ public class StatsClient {
                 .build();
     }
 
-    public List<ViewStats> getViewStats(Map<String, Object> parameters) {
+    public List<ViewStats> getViewStats(String start, String end, List<String> uris, Boolean unique) {
+        Map<String, Object> parameters = Map.of(
+                "start", start,
+                "end", end,
+                "uris", uris,
+                "unique", unique
+        );
+
         try {
             ResponseEntity<ViewStats[]> response = rest.exchange("?start={start}&end={end}&uris={uris}&unique={unique}",
                     HttpMethod.GET, null, ViewStats[].class, parameters);
