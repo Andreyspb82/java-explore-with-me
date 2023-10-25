@@ -42,8 +42,7 @@ public class StatsClient {
                     HttpMethod.GET, null, ViewStats[].class, parameters);
             return Arrays.asList(response.getBody());
         } catch (HttpStatusCodeException e) {
-            new RuntimeException(e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
-        return null;
     }
 }
