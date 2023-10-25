@@ -52,8 +52,8 @@ services:
 #      - "/etc/timezone:/etc/timezone:ro"
 #      - "/etc/localtime:/etc/localtime:ro"
     environment:
-    - POSTGRES_DB=ewm
-    - POSTGRES_USER=ewm
-    - POSTGRES_PASSWORD=ewm
+      - POSTGRES_DB=ewm
+      - POSTGRES_USER=ewm
+      - POSTGRES_PASSWORD=ewm
 
 
