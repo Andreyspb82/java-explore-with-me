@@ -40,7 +40,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
         User user = userService.getUserByIdForService(userId);
         long confirmedRequests = event.getConfirmedRequests();
 
-        if (event.getInitiator().getId() == user.getId()) {
+        if (event.getInitiator().getId().longValue() == user.getId()) {
             throw new ConflictException("The user is the initiator of the event");
         }
         if (!event.getState().equals(State.PUBLISHED)) {
