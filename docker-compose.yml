@@ -5,9 +5,9 @@ services:
     container_name: stats-container
     ports:
       - "9090:9090"
-    volumes:
-      - "/etc/timezone:/etc/timezone:ro"
-      - "/etc/localtime:/etc/localtime:ro"
+#    volumes:
+#      - "/etc/timezone:/etc/timezone:ro"
+#      - "/etc/localtime:/etc/localtime:ro"
     depends_on:
       - stats-db
     environment:
@@ -18,9 +18,9 @@ services:
     container_name: stats-db-container
     ports:
       - "6541:5432"
-    volumes:
-      - "/etc/timezone:/etc/timezone:ro"
-      - "/etc/localtime:/etc/localtime:ro"
+#    volumes:
+#      - "/etc/timezone:/etc/timezone:ro"
+#      - "/etc/localtime:/etc/localtime:ro"
     environment:
       - POSTGRES_DB=stats
       - POSTGRES_USER=stats
@@ -32,12 +32,28 @@ services:
     container_name: main-container
     ports:
       - "8080:8080"
-    volumes:
-      - "/etc/timezone:/etc/timezone:ro"
-      - "/etc/localtime:/etc/localtime:ro"
+#    volumes:
+#      - "/etc/timezone:/etc/timezone:ro"
+#      - "/etc/localtime:/etc/localtime:ro"
     depends_on:
       - ewm-db
+      - stats-server
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://ewm-db:5432/ewm
+      - STATS_SERVER_URL=http://stats-server:9090
+
 
   ewm-db:
     image: postgres:14-alpine
     container_name: ewm-db-container
+    ports:
+      - "6542:5432"
+#    volumes:
+#      - "/etc/timezone:/etc/timezone:ro"
+#      - "/etc/localtime:/etc/localtime:ro"
+    environment:
+    - POSTGRES_DB=ewm
+    - POSTGRES_USER=ewm
+    - POSTGRES_PASSWORD=ewm
+
+
