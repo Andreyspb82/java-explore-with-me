@@ -19,7 +19,6 @@ import ru.practicum.ewm.event.dto.SearchFilterPublic;
 import ru.practicum.ewm.event.service.EventService;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -30,15 +29,14 @@ import java.util.List;
 @Slf4j
 @RequestMapping(path = "/events")
 @AllArgsConstructor
-@Valid
 public class EventControllerPublic {
+
+    private static final String FORMAT_TO_DATE = ("yyyy-MM-dd HH:mm:ss");
+    private static final DateTimeFormatter FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public final EventService eventService;
 
     public final HitClient hitClient;
-
-    private static final String FORMAT_TO_DATE = ("yyyy-MM-dd HH:mm:ss");
-    private static final DateTimeFormatter FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)

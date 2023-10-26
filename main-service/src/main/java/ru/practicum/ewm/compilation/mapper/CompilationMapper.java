@@ -18,12 +18,11 @@ public class CompilationMapper {
 
         if (newCompilationDto == null) {
             return null;
-        } else {
-            return Compilation.builder()
-                    .pinned(newCompilationDto.getPinned() != null && newCompilationDto.getPinned())
-                    .title(newCompilationDto.getTitle())
-                    .build();
         }
+        return Compilation.builder()
+                .pinned(newCompilationDto.getPinned() != null && newCompilationDto.getPinned())
+                .title(newCompilationDto.getTitle())
+                .build();
     }
 
     public static Compilation mapToCompilationUpdate(UpdateCompilationRequest updateCompilation,

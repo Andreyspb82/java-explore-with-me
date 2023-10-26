@@ -3,6 +3,7 @@ package ru.practicum.ewm.category.model;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
@@ -15,6 +16,7 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Entity
 @Table(name = "categories")
@@ -26,7 +28,4 @@ public class Category {
 
     @Column(name = "name")
     private String name;
-
-    public Category() {
-    }
 }

@@ -32,7 +32,6 @@ import java.util.List;
 @Slf4j
 @RequestMapping(path = "/users/{userId}/events")
 @AllArgsConstructor
-@Valid
 public class EventControllerPrivate {
 
     public final EventService eventService;

@@ -73,15 +73,13 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
 
         if (request.isEmpty()) {
             throw new NotFoundException("Request with Id =" + requestId + " not found or not available");
-        } else {
-            request.get().setStatus(Status.CANCELED);
-            return ParticipationRequestMapper.mapToParticipationRequestDto(requestRepository.save(request.get()));
         }
+        request.get().setStatus(Status.CANCELED);
+        return ParticipationRequestMapper.mapToParticipationRequestDto(requestRepository.save(request.get()));
     }
 
     @Override
     public List<ParticipationRequestDto> getRequestsByUserId(long userId) {
-
         return ParticipationRequestMapper.mapToParticipationRequestsDto(requestRepository.findByUserIdForOtherUserEvents(userId));
     }
 }

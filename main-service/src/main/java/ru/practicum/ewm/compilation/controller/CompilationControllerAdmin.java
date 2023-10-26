@@ -24,7 +24,6 @@ import javax.validation.Valid;
 @Slf4j
 @RequestMapping(path = "/admin/compilations")
 @AllArgsConstructor
-@Valid
 public class CompilationControllerAdmin {
 
     private final CompilationService compilationService;

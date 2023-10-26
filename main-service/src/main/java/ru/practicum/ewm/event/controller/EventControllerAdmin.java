@@ -29,12 +29,11 @@ import java.util.List;
 @Slf4j
 @RequestMapping(path = "/admin/events")
 @AllArgsConstructor
-@Valid
 public class EventControllerAdmin {
 
-    public final EventService eventService;
-
     private static final String FORMAT_TO_DATE = ("yyyy-MM-dd HH:mm:ss");
+
+    public final EventService eventService;
 
     @PatchMapping("/{eventId}")
     @ResponseStatus(HttpStatus.OK)

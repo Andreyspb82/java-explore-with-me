@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.ewm.category.dto.CategoryDto;
 import ru.practicum.ewm.category.service.CategoryService;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.util.List;
 
@@ -23,7 +22,6 @@ import java.util.List;
 @Slf4j
 @RequestMapping(path = "/categories")
 @AllArgsConstructor
-@Valid
 public class CategoryControllerPublic {
 
     public final CategoryService categoryService;

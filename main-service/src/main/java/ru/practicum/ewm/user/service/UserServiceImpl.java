@@ -22,18 +22,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto createUser(NewUserRequest newUser) {
-
         return UserMapper.mapToUserDto(userRepository.save(UserMapper.mapToUser(newUser)));
     }
 
     @Override
     public List<UserDto> getUsers(List<Long> ids, PageRequest page) {
-
         if (ids.isEmpty()) {
             return UserMapper.mapToUsersDto(userRepository.findAllWithPage(page));
-        } else {
-            return UserMapper.mapToUsersDto(userRepository.findByUsersIdWithPage(ids, page));
         }
+        return UserMapper.mapToUsersDto(userRepository.findByUsersIdWithPage(ids, page));
+
     }
 
     @Override

@@ -52,22 +52,21 @@ public class EventMapper {
 
         if (updateEvent.getStateAction() == null) {
             return event;
-        } else {
-            if (updateEvent.getStateAction().equals(String.valueOf(StateAction.CANCEL_REVIEW))) {
-                event.setState(State.CANCELED);
-            }
-            if (updateEvent.getStateAction().equals(String.valueOf(StateAction.SEND_TO_REVIEW))) {
-                event.setState(State.PENDING);
-            }
-            if (updateEvent.getStateAction().equals(String.valueOf(StateAction.PUBLISH_EVENT))) {
-                event.setState(State.PUBLISHED);
-                event.setPublishedOn(LocalDateTime.now());
-            }
-            if (updateEvent.getStateAction().equals(String.valueOf(StateAction.REJECT_EVENT))) {
-                event.setState(State.CANCELED);
-            }
-            return event;
         }
+        if (updateEvent.getStateAction().equals(String.valueOf(StateAction.CANCEL_REVIEW))) {
+            event.setState(State.CANCELED);
+        }
+        if (updateEvent.getStateAction().equals(String.valueOf(StateAction.SEND_TO_REVIEW))) {
+            event.setState(State.PENDING);
+        }
+        if (updateEvent.getStateAction().equals(String.valueOf(StateAction.PUBLISH_EVENT))) {
+            event.setState(State.PUBLISHED);
+            event.setPublishedOn(LocalDateTime.now());
+        }
+        if (updateEvent.getStateAction().equals(String.valueOf(StateAction.REJECT_EVENT))) {
+            event.setState(State.CANCELED);
+        }
+        return event;
     }
 
     public static EventFullDto mapToEventFullDto(Event event) {

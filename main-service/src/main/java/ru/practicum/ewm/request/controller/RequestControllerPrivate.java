@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.ewm.request.dto.ParticipationRequestDto;
 import ru.practicum.ewm.request.service.ParticipationRequestService;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Validated
@@ -23,7 +22,6 @@ import java.util.List;
 @Slf4j
 @RequestMapping(path = "/users/{userId}/requests")
 @AllArgsConstructor
-@Valid
 public class RequestControllerPrivate {
 
     public final ParticipationRequestService requestService;

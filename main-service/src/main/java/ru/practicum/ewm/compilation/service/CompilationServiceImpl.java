@@ -34,17 +34,15 @@ public class CompilationServiceImpl implements CompilationService {
 
         Compilation compilation = CompilationMapper.mapToCompilationNew(newCompilationDto);
 
-        if (newCompilationDto.getEvents() != null) {
-            List<Event> events = eventRepository.findAllById(newCompilationDto.getEvents());
-            compilation.setEvents(events);
-            Compilation compilationSave = compilationRepository.save(compilation);
-            List<EventShortDto> eventShort = EventMapper.mapToEventsShortDto(compilationSave.getEvents());
-            return CompilationMapper.mapToCompilationDto(compilationSave, eventShort);
-
-        } else {
+        if (newCompilationDto.getEvents() == null) {
             Compilation compilationSave = compilationRepository.save(compilation);
             return CompilationMapper.mapToCompilationDto(compilationSave, new ArrayList<>());
         }
+        List<Event> events = eventRepository.findAllById(newCompilationDto.getEvents());
+        compilation.setEvents(events);
+        Compilation compilationSave = compilationRepository.save(compilation);
+        List<EventShortDto> eventShort = EventMapper.mapToEventsShortDto(compilationSave.getEvents());
+        return CompilationMapper.mapToCompilationDto(compilationSave, eventShort);
     }
 
     @Override
@@ -53,17 +51,15 @@ public class CompilationServiceImpl implements CompilationService {
         if (!compilationRepository.existsById(compId)) {
             throw new NotFoundException("Compilation with Id =" + compId + " does not exist");
         }
-
         Compilation compilationOld = compilationRepository.findById(compId).get();
         Compilation compilationUpdate = CompilationMapper.mapToCompilationUpdate(updateCompilation, compilationOld);
 
-        if (updateCompilation.getEvents() != null) {
-            List<Event> events = eventRepository.findAllById(updateCompilation.getEvents());
-            compilationUpdate.setEvents(events);
-            return mapToDto(compilationUpdate);
-        } else {
+        if (updateCompilation.getEvents() == null) {
             return mapToDto(compilationUpdate);
         }
+        List<Event> events = eventRepository.findAllById(updateCompilation.getEvents());
+        compilationUpdate.setEvents(events);
+        return mapToDto(compilationUpdate);
     }
 
     private CompilationDto mapToDto(Compilation compilationUpdate) {
@@ -86,8 +82,8 @@ public class CompilationServiceImpl implements CompilationService {
 
         List<CompilationDto> compilationsDto = new ArrayList<>();
         for (Compilation compilation : compilations) {
-            List<EventShortDto> eventShortDtos = EventMapper.mapToEventsShortDto(compilation.getEvents());
-            CompilationDto compilationDto = CompilationMapper.mapToCompilationDto(compilation, eventShortDtos);
+            List<EventShortDto> eventShortsDto = EventMapper.mapToEventsShortDto(compilation.getEvents());
+            CompilationDto compilationDto = CompilationMapper.mapToCompilationDto(compilation, eventShortsDto);
             compilationsDto.add(compilationDto);
         }
         return compilationsDto;

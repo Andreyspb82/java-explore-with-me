@@ -3,6 +3,7 @@ package ru.practicum.ewm.compilation.model;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.practicum.ewm.event.model.Event;
 
@@ -19,6 +20,7 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Entity
 @Table(name = "compilations")
@@ -41,7 +43,4 @@ public class Compilation {
 
     @JoinColumn(name = "title")
     private String title;
-
-    public Compilation() {
-    }
 }

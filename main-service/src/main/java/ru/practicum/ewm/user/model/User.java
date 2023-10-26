@@ -3,6 +3,7 @@ package ru.practicum.ewm.user.model;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
@@ -15,6 +16,7 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Entity
 @Table(name = "users")
@@ -29,7 +31,4 @@ public class User {
 
     @Column(name = "email")
     private String email;
-
-    public User() {
-    }
 }

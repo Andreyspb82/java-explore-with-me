@@ -36,7 +36,6 @@ public class CategoryServiceImpl implements CategoryService {
         if (!categoryRepository.existsById(catId)) {
             throw new NotFoundException("Category with Id =" + catId + " does not exist");
         }
-
         Category oldCat = categoryRepository.findById(catId).get();
         oldCat.setName(categoryDto.getName());
         return CategoryMapper.mapToCategoryDto(categoryRepository.save(oldCat));

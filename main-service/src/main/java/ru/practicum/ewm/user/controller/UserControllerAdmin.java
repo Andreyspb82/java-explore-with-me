@@ -27,7 +27,6 @@ import java.util.List;
 @Slf4j
 @RequestMapping(path = "/admin/users")
 @AllArgsConstructor
-@Valid
 public class UserControllerAdmin {
 
     public final UserService userService;

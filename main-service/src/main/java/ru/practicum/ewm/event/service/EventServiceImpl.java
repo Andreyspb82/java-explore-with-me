@@ -57,6 +57,8 @@ import java.util.stream.Collectors;
 @Data
 public class EventServiceImpl implements EventService {
 
+    private static final DateTimeFormatter FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
     public final EventRepository eventRepository;
 
     public final CategoryService categoryService;
@@ -68,8 +70,6 @@ public class EventServiceImpl implements EventService {
     public final ParticipationRequestRepository participationRequestRepository;
 
     public final StatsClient statsClient;
-
-    private static final DateTimeFormatter FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Override
     public EventFullDto createEvent(long userId, NewEventDto newEvent) {
@@ -216,16 +216,15 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<EventFullDto> getEventsByAdmin(SearchFilterAdmin filterAdmin, PageRequest page) {
 
-        System.out.println("filterAdmin = " + filterAdmin);
         List<Specification<Event>> specifications = searchFilterAdminToSpecification(filterAdmin);
 
         if (specifications.isEmpty()) {
             Page<Event> events = eventRepository.findAll(page);
             return EventMapper.mapToEventsFullDto(events.getContent());
-        } else {
-            Page<Event> events = eventRepository.findAll(specifications.stream().reduce(Specification::and).orElseThrow(() -> new BadRequestException("Bad request")), page);
-            return EventMapper.mapToEventsFullDto(events.getContent());
         }
+        Page<Event> events = eventRepository.findAll(specifications.stream().reduce(Specification::and)
+                .orElseThrow(() -> new BadRequestException("The request was formed incorrectly")), page);
+        return EventMapper.mapToEventsFullDto(events.getContent());
     }
 
     @Override
@@ -253,9 +252,9 @@ public class EventServiceImpl implements EventService {
         }
         if (result.isEmpty()) {
             throw new BadRequestException("The request was formed incorrectly");
-        } else {
-            return EventMapper.mapToEventsShortDto(result);
         }
+        return EventMapper.mapToEventsShortDto(result);
+
     }
 
     @Override
@@ -358,7 +357,14 @@ public class EventServiceImpl implements EventService {
     }
 
     private Specification<Event> eventDate(LocalDateTime rangeStart, LocalDateTime rangeEnd) {
+        validationDateSearch(rangeStart, rangeEnd);
         return (root, query, criteriaBuilder) -> criteriaBuilder.between(root.get("eventDate"), rangeStart, rangeEnd);
+    }
+
+    private void validationDateSearch(LocalDateTime start, LocalDateTime end) {
+        if (start.isAfter(end)) {
+            throw new BadRequestException("Searching the start date is after the end date");
+        }
     }
 
     private Specification<Event> paid(Boolean paid) {

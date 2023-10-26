@@ -3,6 +3,7 @@ package ru.practicum.ewm.event.model;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.practicum.ewm.category.model.Category;
 import ru.practicum.ewm.event.enums.State;
@@ -24,6 +25,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Entity
 @Table(name = "events")
@@ -81,7 +83,4 @@ public class Event {
 
     @Column(name = "views")
     private Long views;
-
-    public Event() {
-    }
 }
