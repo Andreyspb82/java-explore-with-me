@@ -47,6 +47,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -265,12 +266,16 @@ public class EventServiceImpl implements EventService {
         if (event.isEmpty()) {
             throw new NotFoundException("Event with Id =" + eventId + " not found or not available");
         }
+        Map<String, Object> parameters = Map.of(
+                "start", event.get().getCreatedOn().minusHours(4).format(FORMAT),
+                "end", event.get().getEventDate().plusMinutes(10).format(FORMAT),
+                "uris", "/events/" + eventId,
+                "unique", true);
 
-        Optional<List<ViewStats>> viewStats = Optional.ofNullable(statsClient.getViewStats(LocalDateTime.now().minusYears(100).format(FORMAT),
-                LocalDateTime.now().plusHours(1).format(FORMAT), Collections.singletonList(("/events/" + eventId)), true));
+        List<ViewStats> viewStats = statsClient.getViewStats(parameters);
 
-        if (viewStats.isPresent()) {
-            long hits = viewStats.get().get(0).getHits();
+        if (!viewStats.isEmpty()) {
+            long hits = viewStats.get(0).getHits();
             event.get().setViews(hits);
         }
         return EventMapper.mapToEventFullDto(eventRepository.save(event.get()));
