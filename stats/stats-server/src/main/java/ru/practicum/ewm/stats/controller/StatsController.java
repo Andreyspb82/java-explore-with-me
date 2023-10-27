@@ -17,6 +17,7 @@ import ru.practicum.ewm.dto.stats.ViewStats;
 import ru.practicum.ewm.stats.service.StatsService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -24,14 +25,15 @@ import java.util.List;
 @RestController
 @Slf4j
 @AllArgsConstructor
+@Valid
 public class StatsController {
 
     private final StatsService statsService;
 
-    private static final String FORMAT = ("yyyy-MM-dd HH:mm:ss");
+    private static final String FORMAT_TO_DATE = ("yyyy-MM-dd HH:mm:ss");
 
     @PostMapping("/hit")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     public EndpointHitDto createEndpointHit(@Valid @RequestBody EndpointHitDto endpointHitDto) {
         log.info("Creating EndpointHit with app={}, uri={}, ip={}, timestamp={}",
                 endpointHitDto.getApp(), endpointHitDto.getUri(), endpointHitDto.getIp(), endpointHitDto.getTimestamp());
@@ -39,12 +41,12 @@ public class StatsController {
     }
 
     @GetMapping("/stats")
-    public List<ViewStats> getViewStats(@RequestParam @DateTimeFormat(pattern = FORMAT) LocalDateTime start,
-                                        @RequestParam @DateTimeFormat(pattern = FORMAT) LocalDateTime end,
+    public List<ViewStats> getViewStats(@NotNull @RequestParam @DateTimeFormat(pattern = FORMAT_TO_DATE) LocalDateTime start,
+                                        @NotNull @RequestParam @DateTimeFormat(pattern = FORMAT_TO_DATE) LocalDateTime end,
                                         @RequestParam(defaultValue = "") List<String> uris,
                                         @RequestParam(defaultValue = "false") Boolean unique) {
 
-        log.info("Get stats with start={}, end={}, uris={}, unique={}", start, end, uris, unique);
+        log.info("Get List<ViewStats> with start={}, end={}, uris={}, unique={}", start, end, uris, unique);
         return statsService.getViewStats(start, end, uris, unique);
     }
 }
