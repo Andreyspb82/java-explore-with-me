@@ -46,28 +46,25 @@ public class EventControllerPrivate {
     }
 
     @PatchMapping("/{eventId}")
-    @ResponseStatus(HttpStatus.OK)
     public EventFullDto updateEventByOwnerId(@PathVariable long userId,
                                              @PathVariable long eventId,
-                                             @Valid @RequestBody UpdateEventUserRequest updateEventUserRequest) {
+                                             @Valid @RequestBody UpdateEventUserRequest userRequest) {
 
-        log.info("Update Event by Owner with eventId={}, ownerId={}, UpdateEventUserRequest={}", eventId, userId, updateEventUserRequest);
-        return eventService.updateEventByOwnerId(userId, eventId, updateEventUserRequest);
+        log.info("Update Event by Owner with eventId={}, ownerId={}, UpdateEventUserRequest={}", eventId, userId, userRequest);
+        return eventService.updateEventByOwnerId(userId, eventId, userRequest);
     }
 
     @PatchMapping("/{eventId}/requests")
-    @ResponseStatus(HttpStatus.OK)
     public EventRequestStatusUpdateResult updateStatusRequestByOwnerId(@PathVariable long userId,
                                                                        @PathVariable long eventId,
                                                                        @Valid @RequestBody EventRequestStatusUpdateRequest
-                                                                               eventRequestStatusUpdateRequest) {
+                                                                               request) {
         log.info("Update Event Request Status by Owner with eventId={}, ownerId={}, requestIds={}, status={}", eventId,
-                userId, eventRequestStatusUpdateRequest.getRequestIds(), eventRequestStatusUpdateRequest.getStatus());
-        return eventService.updateStatusRequestByOwnerId(userId, eventId, eventRequestStatusUpdateRequest);
+                userId, request.getRequestIds(), request.getStatus());
+        return eventService.updateStatusRequestByOwnerId(userId, eventId, request);
     }
 
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
     public List<EventShortDto> getEventsByOwnerId(@PathVariable long userId,
                                                   @Min(0) @RequestParam(defaultValue = "0") int from,
                                                   @Min(0) @RequestParam(defaultValue = "10") int size) {
@@ -78,7 +75,6 @@ public class EventControllerPrivate {
     }
 
     @GetMapping("/{eventId}")
-    @ResponseStatus(HttpStatus.OK)
     public EventFullDto getEventByOwnerId(@PathVariable long userId,
                                           @PathVariable long eventId) {
 
@@ -87,7 +83,6 @@ public class EventControllerPrivate {
     }
 
     @GetMapping("/{eventId}/requests")
-    @ResponseStatus(HttpStatus.OK)
     public List<ParticipationRequestDto> getRequestsByOwnerId(@PathVariable long userId,
                                                               @PathVariable long eventId) {
 

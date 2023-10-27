@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.practicum.ewm.stats.exception.dto.ApiError;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
@@ -26,21 +24,11 @@ public class ErrorHandler {
 
         log.error("Error: " + e.getMessage(), e);
         return ApiError.builder()
-                .errors(Collections.singletonList(error(e)))
+                .errors(Collections.singletonList(e.getMessage()))
                 .message(e.getLocalizedMessage())
                 .reason("Bad request")
                 .status(String.valueOf(HttpStatus.BAD_REQUEST))
                 .timestamp(LocalDateTime.now().format(FORMAT))
                 .build();
-    }
-
-    private String error(Exception e) throws IOException {
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        e.printStackTrace(pw);
-        String error = sw.toString();
-        sw.close();
-        pw.close();
-        return error;
     }
 }

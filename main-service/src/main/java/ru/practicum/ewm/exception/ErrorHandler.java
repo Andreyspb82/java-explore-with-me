@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.practicum.ewm.exception.dto.ApiError;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
@@ -25,11 +23,11 @@ public class ErrorHandler {
 
     @ExceptionHandler({NotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiError handleNotFoundException(final NotFoundException e) throws IOException {
+    public ApiError handleNotFoundException(final Exception e) throws IOException {
 
         log.error("Error: " + e.getMessage(), e);
         return ApiError.builder()
-                .errors(Collections.singletonList(error(e)))
+                .errors(Collections.singletonList(e.getMessage()))
                 .message(e.getLocalizedMessage())
                 .reason("Data not found")
                 .status(String.valueOf(HttpStatus.NOT_FOUND))
@@ -43,7 +41,7 @@ public class ErrorHandler {
 
         log.error("Error: " + e.getMessage(), e);
         return ApiError.builder()
-                .errors(Collections.singletonList(error(e)))
+                .errors(Collections.singletonList(e.getMessage()))
                 .message(e.getLocalizedMessage())
                 .reason("Data conflicts with existing data")
                 .status(String.valueOf(HttpStatus.CONFLICT))
@@ -57,21 +55,11 @@ public class ErrorHandler {
 
         log.error("Error: " + e.getMessage(), e);
         return ApiError.builder()
-                .errors(Collections.singletonList(error(e)))
+                .errors(Collections.singletonList(e.getMessage()))
                 .message(e.getLocalizedMessage())
                 .reason("Bad request")
                 .status(String.valueOf(HttpStatus.BAD_REQUEST))
                 .timestamp(LocalDateTime.now().format(FORMAT))
                 .build();
-    }
-
-    private String error(Exception e) throws IOException {
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        e.printStackTrace(pw);
-        String error = sw.toString();
-        sw.close();
-        pw.close();
-        return error;
     }
 }

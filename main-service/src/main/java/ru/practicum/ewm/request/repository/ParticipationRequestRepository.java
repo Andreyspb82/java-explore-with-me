@@ -17,6 +17,7 @@ public interface ParticipationRequestRepository extends JpaRepository<Participat
             "and r.event_id in(select e.id from events e where e.initiator_id <> ?1)", nativeQuery = true)
     List<ParticipationRequest> findByUserIdForOtherUserEvents(long userId);
 
+
     @Query(value = "select * from requests r where r.event_id = ?1 and r.status = ?2 and r.id in (?3)", nativeQuery = true)
     List<ParticipationRequest> findByEventIdAndStatusAndId(long eventId, String status, List<Long> ids);
 }

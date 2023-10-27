@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.ewm.event.dto.EventFullDto;
 import ru.practicum.ewm.event.dto.SearchFilterAdmin;
@@ -36,16 +34,14 @@ public class EventControllerAdmin {
     public final EventService eventService;
 
     @PatchMapping("/{eventId}")
-    @ResponseStatus(HttpStatus.OK)
     public EventFullDto updateEventByAdmin(@PathVariable long eventId,
-                                           @Valid @RequestBody UpdateEventAdminRequest updateEventAdminRequest) {
+                                           @Valid @RequestBody UpdateEventAdminRequest adminRequest) {
 
-        log.info("Update Event by admin with eventId={}, UpdateEventAdminRequest={}", eventId, updateEventAdminRequest);
-        return eventService.updateEventByAdmin(eventId, updateEventAdminRequest);
+        log.info("Update Event by admin with eventId={}, UpdateEventAdminRequest={}", eventId, adminRequest);
+        return eventService.updateEventByAdmin(eventId, adminRequest);
     }
 
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
     public List<EventFullDto> getEventsByAdmin(@RequestParam(defaultValue = "") List<Long> users,
                                                @RequestParam(defaultValue = "") List<String> states,
                                                @RequestParam(defaultValue = "") List<Long> categories,

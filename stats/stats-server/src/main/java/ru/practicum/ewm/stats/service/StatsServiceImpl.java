@@ -30,7 +30,6 @@ public class StatsServiceImpl implements StatsService {
         if (start.isAfter(end)) {
             throw new BadRequestException("Searching the start date is after the end date");
         }
-
         if (unique && !uris.isEmpty()) {
             return statsRepository.findByDateAndUrisAndUnique(start, end, uris);
         }

@@ -19,10 +19,10 @@ public interface EventService {
 
     public EventFullDto createEvent(long userId, NewEventDto newEvent);
 
-    public EventFullDto updateEventByOwnerId(long userId, long eventId, UpdateEventUserRequest updateEventUserRequest);
+    public EventFullDto updateEventByOwnerId(long userId, long eventId, UpdateEventUserRequest userRequest);
 
     public EventRequestStatusUpdateResult updateStatusRequestByOwnerId(long userId,
-                                                                       long eventId, EventRequestStatusUpdateRequest eventRequestStatusUpdateRequest);
+                                                                       long eventId, EventRequestStatusUpdateRequest statusRequest);
 
     public List<EventShortDto> getEventsByOwnerId(long userId, PageRequest page);
 
@@ -30,7 +30,7 @@ public interface EventService {
 
     public List<ParticipationRequestDto> getRequestsByOwnerId(long userId, long eventId);
 
-    public EventFullDto updateEventByAdmin(long eventId, UpdateEventAdminRequest updateEventAdminRequest);
+    public EventFullDto updateEventByAdmin(long eventId, UpdateEventAdminRequest adminRequest);
 
     public List<EventFullDto> getEventsByAdmin(SearchFilterAdmin filterAdmin, PageRequest page);
 

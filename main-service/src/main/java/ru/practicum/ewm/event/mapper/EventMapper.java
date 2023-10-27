@@ -24,10 +24,10 @@ public class EventMapper {
 
     private static final DateTimeFormatter FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    public static Event mapToEventNew(NewEventDto newEvent, Category categoryById, User user) {
+    public static Event mapToNewEvent(NewEventDto newEvent, Category category, User user) {
         return Event.builder()
                 .annotation(newEvent.getAnnotation())
-                .category(categoryById)
+                .category(category)
                 .createdOn(LocalDateTime.now())
                 .description(newEvent.getDescription())
                 .eventDate(LocalDateTime.parse(newEvent.getEventDate(), FORMAT))
@@ -39,31 +39,31 @@ public class EventMapper {
                 .build();
     }
 
-    public static Event mapToEventUpdate(Event event, UpdateEventUserRequest updateEvent) {
+    public static Event mapToEventUpdate(Event event, UpdateEventUserRequest userRequest) {
 
-        event.setAnnotation(updateEvent.getAnnotation() != null ? updateEvent.getAnnotation() : event.getAnnotation());
-        event.setDescription(updateEvent.getDescription() != null ? updateEvent.getDescription() : event.getDescription());
-        event.setEventDate(updateEvent.getEventDate() != null ? LocalDateTime.parse(updateEvent.getEventDate(), FORMAT) : event.getEventDate());
-        event.setPaid(updateEvent.getPaid() != null ? updateEvent.getPaid() : event.getPaid());
-        event.setParticipantLimit(updateEvent.getParticipantLimit() != null ? updateEvent.getParticipantLimit() : event.getParticipantLimit());
-        event.setRequestModeration(updateEvent.getRequestModeration() != null ? updateEvent.getRequestModeration() : event.getRequestModeration());
-        event.setTitle(updateEvent.getTitle() != null ? updateEvent.getTitle() : event.getTitle());
+        event.setAnnotation(userRequest.getAnnotation() != null ? userRequest.getAnnotation() : event.getAnnotation());
+        event.setDescription(userRequest.getDescription() != null ? userRequest.getDescription() : event.getDescription());
+        event.setEventDate(userRequest.getEventDate() != null ? LocalDateTime.parse(userRequest.getEventDate(), FORMAT) : event.getEventDate());
+        event.setPaid(userRequest.getPaid() != null ? userRequest.getPaid() : event.getPaid());
+        event.setParticipantLimit(userRequest.getParticipantLimit() != null ? userRequest.getParticipantLimit() : event.getParticipantLimit());
+        event.setRequestModeration(userRequest.getRequestModeration() != null ? userRequest.getRequestModeration() : event.getRequestModeration());
+        event.setTitle(userRequest.getTitle() != null ? userRequest.getTitle() : event.getTitle());
         event.setViews(event.getViews());
 
-        if (updateEvent.getStateAction() == null) {
+        if (userRequest.getStateAction() == null) {
             return event;
         }
-        if (updateEvent.getStateAction().equals(String.valueOf(StateAction.CANCEL_REVIEW))) {
+        if (userRequest.getStateAction().equals(String.valueOf(StateAction.CANCEL_REVIEW))) {
             event.setState(State.CANCELED);
         }
-        if (updateEvent.getStateAction().equals(String.valueOf(StateAction.SEND_TO_REVIEW))) {
+        if (userRequest.getStateAction().equals(String.valueOf(StateAction.SEND_TO_REVIEW))) {
             event.setState(State.PENDING);
         }
-        if (updateEvent.getStateAction().equals(String.valueOf(StateAction.PUBLISH_EVENT))) {
+        if (userRequest.getStateAction().equals(String.valueOf(StateAction.PUBLISH_EVENT))) {
             event.setState(State.PUBLISHED);
             event.setPublishedOn(LocalDateTime.now());
         }
-        if (updateEvent.getStateAction().equals(String.valueOf(StateAction.REJECT_EVENT))) {
+        if (userRequest.getStateAction().equals(String.valueOf(StateAction.REJECT_EVENT))) {
             event.setState(State.CANCELED);
         }
         return event;

@@ -40,7 +40,6 @@ public class UserControllerAdmin {
     }
 
     @GetMapping()
-    @ResponseStatus(HttpStatus.OK)
     public List<UserDto> getUsers(@RequestParam(defaultValue = "") List<Long> ids,
                                   @Min(0) @RequestParam(defaultValue = "0") int from,
                                   @Min(0) @RequestParam(defaultValue = "10") int size) {

@@ -80,7 +80,7 @@ public class EventServiceImpl implements EventService {
         Category category = categoryService.getCategoryByIdForService(newEvent.getCategory());
         User user = userService.getUserByIdForService(userId);
 
-        Event event = EventMapper.mapToEventNew(newEvent, category, user);
+        Event event = EventMapper.mapToNewEvent(newEvent, category, user);
         event.setLocationModel(locationModel);
         event.setState(State.PENDING);
 
@@ -88,10 +88,10 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public EventFullDto updateEventByOwnerId(long userId, long eventId, UpdateEventUserRequest updateEventUserRequest) {
+    public EventFullDto updateEventByOwnerId(long userId, long eventId, UpdateEventUserRequest userRequest) {
 
-        if (updateEventUserRequest.getEventDate() != null) {
-            eventDateValidation(LocalDateTime.parse(updateEventUserRequest.getEventDate(), FORMAT), 2);
+        if (userRequest.getEventDate() != null) {
+            eventDateValidation(LocalDateTime.parse(userRequest.getEventDate(), FORMAT), 2);
         }
         Event eventOld = getEventByIdForService(eventId);
         if (userId != eventOld.getInitiator().getId()) {
@@ -100,13 +100,13 @@ public class EventServiceImpl implements EventService {
         if (eventOld.getState().equals(State.PUBLISHED)) {
             throw new ConflictException("Event published");
         }
-        Event eventUpdate = eventUpdateByUserAndByAdmin(eventOld, updateEventUserRequest);
+        Event eventUpdate = eventUpdateByUserAndByAdmin(eventOld, userRequest);
 
         return EventMapper.mapToEventFullDto(eventRepository.save(eventUpdate));
     }
 
     @Override
-    public EventRequestStatusUpdateResult updateStatusRequestByOwnerId(long userId, long eventId, EventRequestStatusUpdateRequest updateRequest) {
+    public EventRequestStatusUpdateResult updateStatusRequestByOwnerId(long userId, long eventId, EventRequestStatusUpdateRequest statusRequest) {
         Event event = getEventByIdForService(eventId);
 
         if (userId != event.getInitiator().getId()) {
@@ -118,15 +118,15 @@ public class EventServiceImpl implements EventService {
         if (participantLimit > 0 && confirmedRequest == participantLimit) {
             throw new ConflictException("Event participant limit reached");
         }
-        if (updateRequest.getStatus().equals(String.valueOf(Status.REJECTED))) {
-            updateStatusByIds(eventId, updateRequest.getRequestIds(), Status.REJECTED);
+        if (statusRequest.getStatus().equals(String.valueOf(Status.REJECTED))) {
+            updateStatusByIds(eventId, statusRequest.getRequestIds(), Status.REJECTED);
         }
         if (participantLimit == 0) {
-            updateStatusByIds(eventId, updateRequest.getRequestIds(), Status.CONFIRMED);
+            updateStatusByIds(eventId, statusRequest.getRequestIds(), Status.CONFIRMED);
         }
         if (participantLimit > 0) {
             List<ParticipationRequest> requestsPendingForUpdate = participationRequestRepository.findByEventIdAndStatusAndId(eventId,
-                    String.valueOf(Status.PENDING), updateRequest.getRequestIds());
+                    String.valueOf(Status.PENDING), statusRequest.getRequestIds());
             List<ParticipationRequest> requestForRejected = new ArrayList<>();
 
             for (ParticipationRequest request : requestsPendingForUpdate) {
@@ -143,9 +143,9 @@ public class EventServiceImpl implements EventService {
             }
         }
         List<ParticipationRequest> confirmRequests = participationRequestRepository.findByEventIdAndStatusAndId(eventId,
-                String.valueOf(Status.CONFIRMED), updateRequest.getRequestIds());
+                String.valueOf(Status.CONFIRMED), statusRequest.getRequestIds());
         List<ParticipationRequest> rejectedRequests = participationRequestRepository.findByEventIdAndStatusAndId(eventId,
-                String.valueOf(Status.REJECTED), updateRequest.getRequestIds());
+                String.valueOf(Status.REJECTED), statusRequest.getRequestIds());
 
         event.setConfirmedRequests(confirmedRequest);
         eventRepository.save(event);
@@ -195,19 +195,19 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public EventFullDto updateEventByAdmin(long eventId, UpdateEventAdminRequest updateEventAdminRequest) {
+    public EventFullDto updateEventByAdmin(long eventId, UpdateEventAdminRequest adminRequest) {
 
-        if (updateEventAdminRequest.getEventDate() != null) {
-            eventDateValidation(LocalDateTime.parse(updateEventAdminRequest.getEventDate(), FORMAT), 1);
+        if (adminRequest.getEventDate() != null) {
+            eventDateValidation(LocalDateTime.parse(adminRequest.getEventDate(), FORMAT), 1);
         }
         Event eventOld = getEventByIdForService(eventId);
 
         if (!eventOld.getState().equals(State.PENDING)) {
             throw new ConflictException("Event not in pending status");
         }
-        Event eventUpdate = eventUpdateByUserAndByAdmin(eventOld, updateEventAdminRequest);
+        Event eventUpdate = eventUpdateByUserAndByAdmin(eventOld, adminRequest);
 
-        if (updateEventAdminRequest.getEventDate() == null) {
+        if (adminRequest.getEventDate() == null) {
             eventDateValidation(eventUpdate.getEventDate(), 1);
         }
         return EventMapper.mapToEventFullDto(eventRepository.save(eventUpdate));
@@ -260,7 +260,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public EventFullDto getEventByIdPublic(long eventId) {
 
-        Optional<Event> event = Optional.ofNullable(eventRepository.findByIdAndState(eventId, String.valueOf(State.PUBLISHED)));
+        Optional<Event> event = Optional.ofNullable(eventRepository.findByIdAndState(eventId, State.PUBLISHED));
 
         if (event.isEmpty()) {
             throw new NotFoundException("Event with Id =" + eventId + " not found or not available");
@@ -300,17 +300,17 @@ public class EventServiceImpl implements EventService {
         }
     }
 
-    private Event eventUpdateByUserAndByAdmin(Event eventOld, UpdateEventUserRequest updateEvent) {
+    private Event eventUpdateByUserAndByAdmin(Event eventOld, UpdateEventUserRequest userRequest) {
 
-        if (updateEvent.getCategory() != null) {
-            Category categoryUpdate = categoryService.getCategoryByIdForService(updateEvent.getCategory());
+        if (userRequest.getCategory() != null) {
+            Category categoryUpdate = categoryService.getCategoryByIdForService(userRequest.getCategory());
             eventOld.setCategory(categoryUpdate);
         }
-        if (updateEvent.getLocation() != null) {
-            LocationModel locationModelUpdate = locationRepository.save(LocationMapper.mapToLocationModel(updateEvent.getLocation()));
+        if (userRequest.getLocation() != null) {
+            LocationModel locationModelUpdate = locationRepository.save(LocationMapper.mapToLocationModel(userRequest.getLocation()));
             eventOld.setLocationModel(locationModelUpdate);
         }
-        return EventMapper.mapToEventUpdate(eventOld, updateEvent);
+        return EventMapper.mapToEventUpdate(eventOld, userRequest);
     }
 
     private List<Specification<Event>> searchFilterAdminToSpecification(SearchFilterAdmin filterAdmin) {

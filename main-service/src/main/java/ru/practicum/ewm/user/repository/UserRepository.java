@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    @Query(value = "select * from users", nativeQuery = true)
+    @Query("from User")
     List<User> findAllWithPage(Pageable page);
 
-    @Query(value = "select * from users u where u.id in ?1", nativeQuery = true)
+    @Query("from User u where u.id in ?1")
     List<User> findByUsersIdWithPage(List<Long> ids, Pageable page);
 }

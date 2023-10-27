@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
-    @Query(value = "select * from categories", nativeQuery = true)
+    @Query("from Category")
     List<Category> findAll(PageRequest page);
 }

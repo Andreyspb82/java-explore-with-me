@@ -3,13 +3,11 @@ package ru.practicum.ewm.event.controller;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.ewm.client.stats.HitClient;
 import ru.practicum.ewm.dto.stats.EndpointHitDto;
@@ -39,7 +37,6 @@ public class EventControllerPublic {
     public final HitClient hitClient;
 
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
     public List<EventShortDto> getEventsPublic(@RequestParam(defaultValue = "") String text,
                                                @RequestParam(defaultValue = "") List<Long> categories,
                                                @RequestParam(defaultValue = "") Boolean paid,
@@ -76,7 +73,6 @@ public class EventControllerPublic {
     }
 
     @GetMapping("{id}")
-    @ResponseStatus(HttpStatus.OK)
     public EventFullDto getEventByIdPublic(@PathVariable long id,
                                            HttpServletRequest request) {
 
