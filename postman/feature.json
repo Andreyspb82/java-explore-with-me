@@ -1,0 +1,75 @@
+{
+  "info": {
+    "_postman_id": "14cba729-c406-4d83-b526-fd8bbd0ce716",
+    "name": "Test Explore With Me - Feature Comments",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "27462998",
+    "_collection_link": "https://crimson-robot-695792.postman.co/workspace/Team-Workspace~6bb3d8ab-ec7d-42f6-862c-52109dcc7091/collection/27462998-14cba729-c406-4d83-b526-fd8bbd0ce716?action=share&source=collection_link&creator=27462998"
+  },
+  "item": [
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "Добавление пользователя с Id 134",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {\r",
+                  "    pm.response.to.have.status(201);\r",
+                  "    pm.response.to.be.withBody;\r",
+                  "    pm.response.to.be.json;\r",
+                  "});\r",
+                  "pm.test(\"Test user 'id' field\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property('id');\r",
+                  "    pm.expect(jsonData.id, '\"id\" must be 134').to.eql(134);\r",
+                  "});\r",
+                  "pm.test(\"Test user 'name' field\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property('name');\r",
+                  "    pm.expect(jsonData.name, '\"name\" must be \"User 1\"').to.eql('User 1');\r",
+                  "});\r",
+                  "pm.test(\"Test user 'email' field\", function () {\r",
+                  "    var jsonData = pm.response.json();\r",
+                  "    pm.expect(jsonData).to.have.property('email');\r",
+                  "    pm.expect(jsonData.email, '\"email\" must be \"User1@mail.ru\"').to.eql('User1@mail.ru');\r",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"User 1\",\r\n  \"email\": \"User1@mail.ru\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/admin/users",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "admin",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
