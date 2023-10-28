@@ -11,7 +11,7 @@
       "name": "Users",
       "item": [
         {
-          "name": "Добавление пользователя с Id 134",
+          "name": "Добавление пользователя с Id 136",
           "event": [
             {
               "listen": "test",
@@ -25,7 +25,7 @@
                   "pm.test(\"Test user 'id' field\", function () {\r",
                   "    var jsonData = pm.response.json();\r",
                   "    pm.expect(jsonData).to.have.property('id');\r",
-                  "    pm.expect(jsonData.id, '\"id\" must be 134').to.eql(134);\r",
+                  "    pm.expect(jsonData.id, '\"id\" must be 136').to.eql(136);\r",
                   "});\r",
                   "pm.test(\"Test user 'name' field\", function () {\r",
                   "    var jsonData = pm.response.json();\r",
