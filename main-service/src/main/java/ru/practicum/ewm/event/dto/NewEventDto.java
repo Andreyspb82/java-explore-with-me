@@ -46,6 +46,8 @@ public class NewEventDto {
     @Size(min = 3, max = 120)
     private String title;
 
+    private Boolean allowComments;
+
     @Override
     public String toString() {
         return "NewEventDto{" +
@@ -59,6 +61,7 @@ public class NewEventDto {
                 ", participantLimit=" + participantLimit +
                 ", requestModeration=" + requestModeration +
                 ", title='" + title + '\'' +
+                ", allowComments=" + allowComments +
                 '}';
     }
 }

@@ -81,6 +81,9 @@ public class Event {
     @Column(name = "title")
     private String title;
 
+    @Column(name = "allow_comments")
+    private Boolean allowComments;
+
     @Column(name = "views")
     private Long views;
 }

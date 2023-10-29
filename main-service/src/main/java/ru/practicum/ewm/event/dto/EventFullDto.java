@@ -45,5 +45,7 @@ public class EventFullDto {
 
     private String title;
 
+    private Boolean allowComments;
+
     private Long views;
 }

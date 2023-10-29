@@ -15,7 +15,7 @@ public class HitClient {
     private static final String API_PREFIX = "/hit";
     private final RestTemplate rest;
 
-    public HitClient(@Value("${stats-server.url}") String serverUrl, RestTemplateBuilder builder) { //@Value("${stats-server.url}")
+    public HitClient(@Value("${stats-server.url}") String serverUrl, RestTemplateBuilder builder) {
         this.rest = builder
                 .uriTemplateHandler(new DefaultUriBuilderFactory(serverUrl + API_PREFIX))
                 .requestFactory(HttpComponentsClientHttpRequestFactory::new)
@@ -25,7 +25,6 @@ public class HitClient {
     public ResponseEntity<EndpointHitDto> createEndpointHit(EndpointHitDto endpointHitDto) {
         ResponseEntity<EndpointHitDto> response = rest.postForEntity(
                 "", endpointHitDto, EndpointHitDto.class);
-
         return response;
     }
 }

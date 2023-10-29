@@ -40,6 +40,8 @@ public class UpdateEventUserRequest {
     @Size(min = 3, max = 120)
     private String title;
 
+    private Boolean allowComments;
+
     @Override
     public String toString() {
         return "UpdateEvent{" +
@@ -54,6 +56,7 @@ public class UpdateEventUserRequest {
                 ", requestModeration=" + requestModeration +
                 ", stateAction='" + stateAction + '\'' +
                 ", title='" + title + '\'' +
+                ", allowComments=" + allowComments +
                 '}';
     }
 }
