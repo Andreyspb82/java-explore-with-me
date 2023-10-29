@@ -31,5 +31,7 @@ public class EventShortDto {
 
     private String title;
 
+    private Boolean allowComments;
+
     private Long views;
 }

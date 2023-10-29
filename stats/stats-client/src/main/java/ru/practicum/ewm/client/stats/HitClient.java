@@ -25,7 +25,6 @@ public class HitClient {
     public ResponseEntity<EndpointHitDto> createEndpointHit(EndpointHitDto endpointHitDto) {
         ResponseEntity<EndpointHitDto> response = rest.postForEntity(
                 "", endpointHitDto, EndpointHitDto.class);
-
         return response;
     }
 }

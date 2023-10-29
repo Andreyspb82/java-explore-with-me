@@ -10,8 +10,8 @@ import lombok.Setter;
 public class UpdateEventAdminRequest extends UpdateEventUserRequest {
     public UpdateEventAdminRequest(Long id, String annotation, Long category, String description,
                                    String eventDate, Location location, Boolean paid, Long participantLimit,
-                                   Boolean requestModeration, String stateAction, String title) {
+                                   Boolean requestModeration, String stateAction, String title, Boolean allowComments) {
         super(id, annotation, category, description, eventDate, location, paid, participantLimit,
-                requestModeration, stateAction, title);
+                requestModeration, stateAction, title, allowComments);
     }
 }

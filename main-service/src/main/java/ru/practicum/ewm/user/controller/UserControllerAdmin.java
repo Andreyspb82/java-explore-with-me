@@ -39,7 +39,7 @@ public class UserControllerAdmin {
         return userService.createUser(newUser);
     }
 
-    @GetMapping()
+    @GetMapping
     public List<UserDto> getUsers(@RequestParam(defaultValue = "") List<Long> ids,
                                   @Min(0) @RequestParam(defaultValue = "0") int from,
                                   @Min(0) @RequestParam(defaultValue = "10") int size) {

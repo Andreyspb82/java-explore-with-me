@@ -36,6 +36,7 @@ public class EventMapper {
                 .participantLimit(newEvent.getParticipantLimit() == null ? 0L : newEvent.getParticipantLimit())
                 .requestModeration(newEvent.getRequestModeration() == null || newEvent.getRequestModeration())
                 .title(newEvent.getTitle())
+                .allowComments(newEvent.getAllowComments() == null || newEvent.getAllowComments())
                 .build();
     }
 
@@ -48,6 +49,7 @@ public class EventMapper {
         event.setParticipantLimit(userRequest.getParticipantLimit() != null ? userRequest.getParticipantLimit() : event.getParticipantLimit());
         event.setRequestModeration(userRequest.getRequestModeration() != null ? userRequest.getRequestModeration() : event.getRequestModeration());
         event.setTitle(userRequest.getTitle() != null ? userRequest.getTitle() : event.getTitle());
+        event.setAllowComments(userRequest.getAllowComments() == null || userRequest.getAllowComments());
         event.setViews(event.getViews());
 
         if (userRequest.getStateAction() == null) {
@@ -87,6 +89,7 @@ public class EventMapper {
                 .requestModeration(event.getRequestModeration())
                 .state(String.valueOf(event.getState()))
                 .title(event.getTitle())
+                .allowComments(event.getAllowComments())
                 .views(event.getViews())
                 .build();
     }
@@ -109,6 +112,7 @@ public class EventMapper {
                 .initiator(UserMapper.mapToUserShortDto(event.getInitiator()))
                 .paid(event.getPaid())
                 .title(event.getTitle())
+                .allowComments(event.getAllowComments())
                 .views(event.getViews())
                 .build();
     }
